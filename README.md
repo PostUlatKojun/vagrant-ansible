@@ -37,6 +37,6 @@ ansible: 2.2.1.0
 заходим в папку находится vagrant  
 `cd Vagrant_ansible_master`  
  запускаем  
-`vagrant up` 
+`vagrant up`  
 логинимся в поднятую машину по ssh  
 `vagrant ssh`  
