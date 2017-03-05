@@ -12,28 +12,36 @@ ansible: 2.2.1.0
 Устанавливалось на debian jessie  
 
 ###Установка virtualbox  
-добавляем запись о новом репозитории  
+Ввести в консоли  
 `sudo nano /etc/apt/sources.list`  
-добавить запись в конце файла  
+Вставить строку в конце текста  
 `deb http://download.virtualbox.org/virtualbox/debian jessie contrib`  
-скачиваем и добавляем ключ  
+сохранить изменения комбинацией `Ctrl+O`, нажать Enter, выйти из редактора комбинацией `Ctrl+x` 
+Далее в консоли ввести для скачивания и добавления ключа  
 `wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -`  
-и второй ключ  
+и вторую строку
 `wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -`  
-обновляем данные репозиториев  
+следующей командой обновить репозиторий   
 `sudo apt-get update`  
-устанавливаем virtualbox  
-`sudo apt-get install virtualbox-5.1`  
+и устанавливить virtualbox  
+`sudo apt-get -y install virtualbox-5.1`  
 
 [Оригинал мануала](https://www.virtualbox.org/wiki/Linux_Downloads)  
 
 ###Установка vagrant  
-скачиваем версию vagrant  
+Скачать vagrant  
 `wget https://releases.hashicorp.com/vagrant/1.9.1/vagrant_1.9.1_x86_64.deb`  
-устанавливаем vagrant  
+и устанавливаем его  
 `sudo dpkg -i vagrant_1.9.1_x86_64.deb` 
-устанавливаем плагин гостевой системы virtualbox  
+слудующая команда устанавливает плагин гостевой системы virtualbox  
 `vagrant plugin install vagrant-vbguest`  
+
+###Установка git и клонирование репозитория
+Устанавливаем git
+`sudo apt-get -y install git`
+Создаем папку для хранения репозитория и заходим в нее
+`mkdir vagrant-ansible && cd vagrant ansible`
+
 заходим в папку находится vagrant  
 `cd Vagrant_ansible_master`  
  запускаем  
