@@ -13,6 +13,7 @@ apache-maven: 3.3.9
 gradle: 3.4  
 elasticsearch: 5.2.2  
 kibana: 5.2.2  
+yandex-tank: 1.7.4
 
 Устанавливалось на debian jessie  
 
@@ -95,19 +96,19 @@ kibana: 5.2.2
 Проверка установки  
 `ansible test -a "/home/vagrant/gradle-3.4/bin/gradle -version"`  
 
-###Установка elasticsearch  
+####Установка elasticsearch  
 `ansible-playbook ansible/playbooks/elasticsearch/elasticsearch.yml`  
 Для проверки стоит открыть браузер и набрать в адресной строке  
 `192.168.33.112:9200`  
 Должен загругиться текст, что будет означать о успешной установке и том что elfsticsearch запущен  
 
-###Установка kibana  
+####Установка kibana  
 `ansible-playbook ansible/playbooks/kibana/kibana.yml`  
 Для проверки стоит открыть браузер и набрать в адресной строке  
 '192.168.33.112:5601'  
 Появится логотип kibana с последующим переходом в веь интерфейс  
 
-###Установка yandex-tank  
+####Установка yandex-tank  
 `ansible-playbook ansible/playbooks/yandex-tank/yandex-tank.yml`  
 Для проверки стоит выйти из текущей системы набрав команду  
 `exit`  
