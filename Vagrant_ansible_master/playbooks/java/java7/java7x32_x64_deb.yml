@@ -1,0 +1,28 @@
+---
+- hosts: test
+  become: true
+  tasks: 
+  - name: Install add-apt-repository
+    apt: 
+      name=software-properties-common
+      state=latest
+
+  - name: Add Oracle Java Repository
+    apt_repository: repo='ppa:webupd8team/java'
+
+  - name: Accept Java 7 Licence
+    debconf: 
+      name='oracle-java8-installer' 
+      question='shared/accepted-oracle-license-v1-1' 
+      value='true'
+      vtype='select'
+
+  - name: Install Oracle Java 7
+    apt:
+      name={{item}}
+      state=latest
+      update_cache=yes
+    with_items:
+      - oracle-java7-installer
+      - ca-certificates
+      - oracle-java7-set-default

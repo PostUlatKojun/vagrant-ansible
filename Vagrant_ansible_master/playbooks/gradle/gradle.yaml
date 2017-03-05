@@ -1,0 +1,33 @@
+---
+- hosts: test
+  tasks: 
+
+    - name: Prepared decompression
+      apt:
+        name: unzip
+        state: present
+      become: yes
+
+    - name: Download and unarchive Gradle # вариант с скачиванием и распаковкой в одной задаче
+      unarchive:
+        src: https://services.gradle.org/distributions/gradle-3.4-bin.zip
+        dest: /home/vagrant/
+        remote_src: True
+        validate_certs: False
+
+    - name: add M2_HOME
+      lineinfile:
+        dest: "/home/vagrant/.profile"
+        regexp: 'export GRADLE_HOME=/home/vagrant/gradle-3.4' # не уверен что строка тут нужна, проверить и возможно убрать
+        line: 'export GRADLE_HOME=/home/vagrant/gradle-3.4'
+      
+    - name: add PATH
+      lineinfile:
+        dest: /home/vagrant/.profile
+        regexp: 'export GRADLE_HOME=/home/vagrant/gradle-3.4' # не уверен что строка тут нужна, проверить и возможно убрать
+        line: 'export PATH=${PATH}:${GRADLE_HOME}/bin'
+
+    - name: source .profile
+      command: /home/vagrant/.profile
+      args:
+        executable: /bin/bash

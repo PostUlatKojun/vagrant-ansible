@@ -1,0 +1,49 @@
+---
+- hosts: test
+  tasks:
+
+    - name: check java-package
+      apt:
+        name=java-package
+        state=present
+        update_cache=yes
+      become: true
+
+    - name: download java 7 x64
+      get_url:
+        url: http://download.oracle.com/otn-pub/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz
+        dest: /home/vagrant/jdk-7u80-linux-x64.tar.gz
+        headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
+    
+    - name: make java7.deb
+      raw: echo "Y" > Yes_package
+    
+    - name: make java7.deb 2
+      raw:  make-jpkg jdk-7u80-linux-x64.tar.gz < Yes_package
+
+    - name: rm temp files
+      file: 
+        path=/home/vagrant/Yes_package
+        state=absent
+
+    - name: install java 7
+      apt: 
+        deb=/home/vagrant/oracle-java7-jdk_7u80_amd64.deb
+        state=present
+      become: true
+
+    - name: remove tmp files java7.tar.gz
+      file:
+        path=/home/vagrant/jdk-7u80-linux-x64.tar.gz
+        state=absent
+
+    - name: remove tmp files java7.deb
+      file: 
+        path=/home/vagrant/oracle-java7-jdk_7u80_amd64.deb
+        state=absent
+
+    - name: remove java-package
+      apt: 
+        name=java-package
+        state=absent
+      become: true

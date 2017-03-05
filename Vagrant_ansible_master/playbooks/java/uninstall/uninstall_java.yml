@@ -1,0 +1,45 @@
+---
+- hosts: test
+  tasks:
+
+    - name: uninstall java 7
+      apt:
+        name=oracle-java7-jdk
+        state=absent
+      become: true
+
+    - name: uninstall java 8
+      apt:
+        name=oracle-java8-jdk
+        state=absent
+      become: true
+
+    - name: uninstall java 6
+      apt:
+        name=oracle-java6-jdk
+        state=absent
+      become: true
+    
+    - name: uninstall java 6  
+      apt:
+        name=oracle-java6-installer
+        state=absent
+      become: true
+
+    - name: uninstall java 7  
+      apt:
+        name=oracle-java7-installer
+        state=absent
+      become: true
+
+    - name: uninstall java 8  
+      apt:
+        name=oracle-java8-installer
+        state=absent
+      become: true
+
+    - name: uninstall java 9  
+      apt:
+        name=oracle-java9-installer
+        state=absent
+      become: true

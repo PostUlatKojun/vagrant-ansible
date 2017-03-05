@@ -1,0 +1,26 @@
+---
+- hosts: test # применяется для всех хостов
+  become: yes
+  tasks: # перечень задач
+
+  - name: Install python-software-properties
+    apt: 
+      name: python-software-properties
+      state: present
+
+  - name: Install software-properties-common
+    apt: 
+      name: software-properties-common
+      state: present 
+
+  - name: Add yandex-tank repository 
+    apt_repository:
+      repo: 'ppa:yandex-load/main' 
+      state: present
+      update_cache: yes
+
+  - name: Install yandex-tank
+    apt: 
+      name: yandex-tank
+      state: present
+      
