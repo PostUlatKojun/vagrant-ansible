@@ -3,24 +3,42 @@
   become: yes
   tasks: # перечень задач
 
-  - name: Install python-software-properties
-    apt: 
-      name: python-software-properties
-      state: present
+    - name: Install packages
+      apt: 
+        name={{ item }}
+        state=present
+        update_cache=yes
+      with_items:
+        - python-pip
+        - build-essential
+        - python-dev
+        - libffi-dev
+        - gfortran
+        - libssl-dev
 
-  - name: Install software-properties-common
-    apt: 
-      name: software-properties-common
-      state: present 
+    - name: Upgrade pip
+      pip:
+        name: pip
+        state: latest
 
-  - name: Add yandex-tank repository 
-    apt_repository:
-      repo: 'ppa:yandex-load/main' 
-      state: present
-      update_cache: yes
+    - name: Upgrade setuptools
+      pip:
+        name: setuptools
+        state: latest
 
-  - name: Install yandex-tank
-    apt: 
-      name: yandex-tank
-      state: present
-      
+    - name: Install yandex-tank
+      pip: 
+        name: https://api.github.com/repos/yandex/yandex-tank/tarball/master
+
+    - name: Add phantom repository
+      apt_repository: 
+        repo: 'ppa:yandex-load/main'
+        update_cache: yes
+
+    - name: Install phantom
+      apt: 
+        name={{ item }}
+        state=present
+      with_items:
+        - phantom
+        - phantom-ssl
