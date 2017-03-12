@@ -1,0 +1,28 @@
+---
+- hosts: test # Пока только для debian
+  become: true
+  tasks: 
+
+    - name: Add key
+      apt_key:
+        keyserver: hkp://keyserver.ubuntu.com:80
+        id: 0C49F3730359A14518585931BC711F9BA15703C6
+        state: present
+
+    - name: Create sources list file
+      file:
+        dest: /etc/apt/sources.list.d/mongodb-org-3.4.list
+        owner: root
+        group: root
+        state: touch
+
+    - name: Add repo info in source list
+      lineinfile:
+        dest: /etc/apt/sources.list.d/mongodb-org-3.4.list
+        line: 'deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/3.4 main'
+
+    - name: Install Mongodb 
+      apt:
+        name: mongodb-org
+        state: present
+        update_cache: yes
