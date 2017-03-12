@@ -21,18 +21,20 @@
 
     - name: add ANT_HOME
       lineinfile:
-        dest: "/home/vagrant/.profile"
+        dest: /home/vagrant/.profile
         regexp: 'export ANT_HOME=/home/vagrant/apache-ant-1.9.9' # не уверен что строка тут нужна, проверить и возможно убрать
         line: 'export ANT_HOME=/home/vagrant/apache-ant-1.9.9'
-      
+      become: true
+
     - name: add PATH
       lineinfile:
         dest: /home/vagrant/.profile
         regexp: 'export PATH=${PATH}:${ANT_HOME}/bin' # не уверен что строка тут нужна, проверить и возможно убрать
         line: 'export PATH=${PATH}:${ANT_HOME}/bin'
+      become: true
 
     - name: source .profile
-      shell: source /home/vagrant/.profile 
+      shell: source /home/vagrant/.profile
       args:
         executable: /bin/bash
-  
+      #become: true
