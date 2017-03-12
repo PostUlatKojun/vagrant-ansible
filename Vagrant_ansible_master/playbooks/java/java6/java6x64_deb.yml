@@ -2,6 +2,14 @@
 - hosts: test
   tasks:
     
+    - name: add rep java-package # задача исполняется только для Debian
+      apt_repository:
+        repo: deb http://httpredir.debian.org/debian/ jessie main contrib
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "Debian"
+      become: true
+
     - name: check java-package
       apt:
         name=java-package
@@ -15,12 +23,25 @@
         dest: /home/vagrant/jdk-6u45-linux-x64.bin
         headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
         mode: 0775 
-    
+
     - name: make java6.deb
       raw: echo "Y" > Yes_package
+        
+    - name: install package for success make # только для Debian
+      apt:
+        name={{ item }}
+        state=present
+      with_items:
+        - libgl1-mesa-glx
+        - libgtk2.0-0
+        - libxslt1.1
+        - libxtst6
+        - libxxf86vm1
+      when: ansible_distribution == "Debian"
+      become: true
     
     - name: make java6.deb 2
-      raw:  make-jpkg jdk-6u45-linux-x64.bin < Yes_package
+      raw: make-jpkg jdk-6u45-linux-x64.bin < Yes_package
 
     - name: rm temp files
       file: 
