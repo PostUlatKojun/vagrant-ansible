@@ -12,14 +12,14 @@
       name: apt-transport-https
       state: present    
 
-  - name: Create file
+  - name: Create tarantool source list
     file:
       dest: /etc/apt/sources.list.d/tarantool_1_7.list
       state: touch
 
-  - name: Add text
+  - name: Add tarantool src
     blockinfile:
-      path: /etc/apt/sources.list.d/tarantool_1_7.list
+      dest: /etc/apt/sources.list.d/tarantool_1_7.list
       block: |
         deb http://download.tarantool.org/tarantool/1.7/debian/ jessie main
         deb-src http://download.tarantool.org/tarantool/1.7/debian/ jessie main
