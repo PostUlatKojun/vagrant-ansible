@@ -1,0 +1,14 @@
+---
+- hosts: test
+  become: true
+  tasks: 
+
+    - name: Install pip 
+      apt:
+        name: python-pip
+        state: present
+
+    - name: Install sphinx
+      pip:
+        name: sphinx
+        state: letest
