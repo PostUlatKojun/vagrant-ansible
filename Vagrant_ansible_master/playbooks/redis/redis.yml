@@ -1,0 +1,13 @@
+---
+- hosts: test
+  tasks: 
+
+    - name: Download and unarchive redis # вариант с скачиванием и распаковкой в одной задаче
+      unarchive:
+        src: http://download.redis.io/releases/redis-3.2.8.tar.gz
+        dest: /home/vagrant/
+        remote_src: True
+
+    - name: make redis
+      make:
+        chdir: /home/vagrant/redis-3.2.8
