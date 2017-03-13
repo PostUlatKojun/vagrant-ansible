@@ -1,0 +1,32 @@
+- hosts: test
+  become: true
+  tasks: 
+
+  - name: add apt key # установка только для debian jessie
+    apt_key: 
+      url: http://download.tarantool.org/tarantool/1.7/gpgkey
+      state: present
+
+  - name: Install apt-transport-https
+    apt:
+      name: apt-transport-https
+      state: present    
+
+  - name: Create file
+    file:
+      dest: /etc/apt/sources.list.d/tarantool_1_7.list
+      state: touch
+
+  - name: Add text
+    blockinfile:
+      path: /etc/apt/sources.list.d/tarantool_1_7.list
+      block: |
+        deb http://download.tarantool.org/tarantool/1.7/debian/ jessie main
+        deb-src http://download.tarantool.org/tarantool/1.7/debian/ jessie main
+
+  - name: Install tarantool
+    apt: 
+      name: tarantool
+      state: present
+      update_cache: yes
+ 
