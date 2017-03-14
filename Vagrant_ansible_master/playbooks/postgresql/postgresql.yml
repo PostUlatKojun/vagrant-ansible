@@ -2,17 +2,11 @@
   become: true
   tasks: 
 
-  - name: Create src file postgresql # установка только для debian jessie
-    file:
-      dest: /etc/apt/sources.list.d/pgdg.list
-      state: touch
-
-  - name: Add deb-src postgresql
-    lineinfile:
-      dest: /etc/apt/sources.list.d/pgdg.list
+  - name: Add repos postgresql # установка для debian jessie
+    apt_repository:
+      repo: 'deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main'
       state: present
-      regexp: 'deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main'
-      line: 'deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main'
+      filename: 'pgdg'
 
   - name: Add apt key postgresql
     apt_key: 
@@ -24,4 +18,3 @@
       name: postgresql-9.6
       state: present
       update_cache: yes
-          
