@@ -13,7 +13,7 @@
       url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
       state: present
 
-  - name: Install postgreql
+  - name: Install postgresql
     apt:
       name: postgresql-9.6
       state: present

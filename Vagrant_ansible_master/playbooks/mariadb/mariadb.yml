@@ -9,8 +9,8 @@
 
   - name: Add mariadb key
     apt_key:
-      keyserver: keyserver.ubuntu.com
-      id: 0xcbcb082a1bb943db
+      keyserver: hkp://keyserver.ubuntu.com:80
+      id: 199369E5404BD5FC7D2FE43BCBCB082A1BB943DB
       state: present
 
   - name: Add mariadb repos
