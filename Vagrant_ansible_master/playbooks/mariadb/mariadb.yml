@@ -1,0 +1,25 @@
+- hosts: test
+  become: true
+  tasks: 
+
+  - name: Install apt_key
+    apt:
+      name: software-properties-common
+      state: present
+
+  - name: Add mariadb key
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: 0xcbcb082a1bb943db
+      state: present
+
+  - name: Add mariadb repos
+    apt_repository:
+      repo: 'deb [arch=amd64,i386,ppc64el] ftp://ftp.ulak.net.tr/pub/MariaDB/repo/10.1/debian jessie main'
+      state: present
+
+  - name: Install mariadb
+    apt:
+      name: mariadb-server
+      state: present
+      update_cache: yes
