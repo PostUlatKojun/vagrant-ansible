@@ -1,0 +1,21 @@
+---
+- hosts: test # Пока только для debian
+  become: true
+  tasks: 
+
+    - name: Install apt-transport-https # установка для debian jessie
+      apt:
+        name: apt-transport-https
+        state: present
+        update_cache: yes
+
+    - name: Install graylog repository
+      apt: 
+        deb: https://packages.graylog2.org/repo/packages/graylog-2.2-repository_latest.deb
+        state: present
+
+    - name: Install graylog server
+      apt:
+        name: graylog-server
+        state: present
+        update_cache: yes
