@@ -1,0 +1,9 @@
+---
+- hosts: test
+  become: true
+  tasks: 
+
+    - name: Start service Kibana
+      service: 
+        name: kibana
+        state: started
