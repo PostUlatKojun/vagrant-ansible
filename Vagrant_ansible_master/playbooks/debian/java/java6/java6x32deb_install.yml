@@ -1,0 +1,77 @@
+---
+- hosts: test
+  tasks:
+
+    # java
+    # - name: mkdir java
+    #   file: 
+    #     path=/home/vagrant/java
+    #     state=directory
+    #     owner=vagrant
+    #     group=vagrant
+    #     mode=777
+    
+    - name: check java-package
+      apt:
+        name=java-package
+        state=present
+        update_cache=yes
+      become: true
+
+    - name: download java 6 x86
+      get_url:
+        url: http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-i586.bin
+        dest: /home/vagrant/jdk-6u45-linux-i586.bin
+        headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
+        mode: 0775 
+    #   when: ansible_architecture == "i386"       
+    
+    - name: make java6.deb
+      raw: echo "Y" > Yes_package
+    
+    - name: make java6.deb 2
+      raw:  make-jpkg jdk-6u45-linux-i586.bin < Yes_package
+
+    - name: rm temp files
+      file: 
+        path=/home/vagrant/Yes_package
+        state=absent
+
+    - name: install java 6
+      apt: 
+        deb=/home/vagrant/oracle-java6-jdk_6u45_i386.deb
+        state=present
+      become: true
+
+    - name: remove tmp files java6.tar.gz
+      file:
+        path=/home/vagrant/jdk-6u45-linux-i586.bin
+        state=absent
+
+    - name: remove tmp files java6.deb
+      file: 
+        path=/home/vagrant/oracle-java6-jdk_6u45_i386.deb
+        state=absent
+
+    - name: remove java-package
+      apt: 
+        name=java-package
+        state=absent
+      become: true
+
+
+
+
+    # - name: install java 6
+    #   command: /home/vagrant/java/java6.bin 
+    #     executable=/home/vagrant/java/java6.bin 
+    #     chdir=/home/vagrant/java/
+    # - name: remove java 6 bin
+    #   file: 
+    #     path=/home/vagrant/java/java6.bin
+    #     state=absent
+
+
+
+
+

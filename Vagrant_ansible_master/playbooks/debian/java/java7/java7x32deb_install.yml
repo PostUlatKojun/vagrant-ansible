@@ -1,0 +1,78 @@
+---
+- hosts: test
+  tasks:
+    
+    # java
+    # - name: mkdir
+    #   file: 
+    #     path=/home/vagrant/java 
+    #     state=directory 
+    #     owner=vagrant 
+    #     group=vagrant 
+    #     mode=777   
+    
+    - name: check java-package
+      apt:
+        name=java-package
+        state=present
+        update_cache=yes
+      become: true
+
+    - name: download java 7 x86
+      get_url:
+        url: http://download.oracle.com/otn-pub/java/jdk/7u80-b15/jdk-7u80-linux-i586.tar.gz
+        dest: /home/vagrant/jdk-7u80-linux-i586.tar.gz
+        headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
+    #   when: ansible_architecture == "i386"
+
+    # - name: download java 7 x64
+    #   get_url:
+    #     url: http://download.oracle.com/otn-pub/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz
+    #     dest: /home/vagrant/jdk-7u80-linux-x64.tar.gz
+    #     headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
+    #   when: ansible_architecture == "x86_64"
+
+    # command: 'wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u4-b20/jdk-7u4-linux-x64.tar.gz'
+    
+    - name: make java7.deb
+      raw: echo "Y" > Yes_package
+    
+    - name: make java7.deb 2
+      raw:  make-jpkg jdk-7u80-linux-i586.tar.gz < Yes_package
+
+    - name: rm temp files
+      file: 
+        path=/home/vagrant/Yes_package
+        state=absent
+
+    - name: install java 7
+      apt: 
+        deb=/home/vagrant/oracle-java7-jdk_7u80_i386.deb
+        state=present
+      become: true
+
+    - name: remove tmp files java7.tar.gz
+      file:
+        path=/home/vagrant/jdk-7u80-linux-i586.tar.gz
+        state=absent
+
+    - name: remove tmp files java7.deb
+      file: 
+        path=/home/vagrant/oracle-java7-jdk_7u80_i386.deb
+        state=absent
+
+    - name: remove java-package
+      apt: 
+        name=java-package
+        state=absent
+      become: true
+      
+    # - name: unrar java 7
+    #   shell: 'tar -xvf /home/vagrant/java/java7.tar.gz -C /home/vagrant/java'
+    #   # unarchive:
+    #   #   src=/home/vagrant/java/jdk-7u4-linux-x64.tar.gz
+    #   #   dest=/home/vagrant/java
+    # - name: remove java 7 tar.gz
+    #   file: 
+    #     path=/home/vagrant/java/java7.tar.gz
+    #     state=absent
