@@ -1,0 +1,9 @@
+---
+- hosts: test
+  become: true
+  tasks: 
+
+    - name: Install Elasticsearch 
+      apt:
+        deb: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.2.2.deb
+        state: present

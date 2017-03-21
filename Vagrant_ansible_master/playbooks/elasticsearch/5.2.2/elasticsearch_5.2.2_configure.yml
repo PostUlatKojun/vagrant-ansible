@@ -1,0 +1,13 @@
+---
+- hosts: test
+  become: true
+  tasks: 
+
+    - name: Configure Elasticsearch
+      blockinfile:
+        dest: /etc/elasticsearch/elasticsearch.yml
+        block: |
+          network.host: 0.0.0.0
+          http.port: 9200
+          transport.host: localhost
+          transport.tcp.port: 9300

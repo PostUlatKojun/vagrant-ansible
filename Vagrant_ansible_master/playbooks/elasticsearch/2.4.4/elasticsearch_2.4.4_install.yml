@@ -5,7 +5,7 @@
 
     - name: Install Elasticsearch 
       apt:
-        deb: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.2.2.deb
+        deb: https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.4/elasticsearch-2.4.4.deb
         state: present
 
     - name: Configure Elasticsearch
@@ -17,7 +17,7 @@
           transport.host: localhost
           transport.tcp.port: 9300
 
-    - name: Start service Elasticsearch
-      service:
-        name: elasticsearch
-        state: started
+    #- name: Start service Elasticsearch
+    #  service:
+    #    name: elasticsearch
+    #    state: started
