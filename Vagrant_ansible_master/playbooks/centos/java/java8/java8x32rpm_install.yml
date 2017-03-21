@@ -1,0 +1,20 @@
+---
+- hosts: test
+  tasks:
+     
+    - name: download java 8 x32 rpm
+      get_url:
+        url: http://download.oracle.com/otn-pub/java/jdk/8u112-b15/jdk-8u112-linux-i586.rpm
+        dest: /home/vagrant/jdk-8u112-linux-i586.rpm
+        headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
+
+    - name: install java 8 x32 rpm
+      yum: 
+        name=/home/vagrant/jdk-8u112-linux-i586.rpm
+        state=present
+      become: true
+
+    - name: delete tmp files
+      file:
+        path=/home/vagrant/jdk-8u112-linux-i586.rpm
+        state=absent

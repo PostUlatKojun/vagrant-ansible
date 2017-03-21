@@ -1,0 +1,46 @@
+---
+- hosts: test
+  tasks:
+    
+    # java
+    - name: mkdir
+      file: 
+        path=/home/vagrant/java 
+        state=directory 
+        owner=vagrant 
+        group=vagrant 
+        mode=777   
+    
+    - name: install wget
+      yum:
+        name: wget
+        state: present
+        update_cache: yes
+      become: true
+
+    - name: download java 6 x64 rpm
+      get_url:
+        url: http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64-rpm.bin
+        dest: /home/vagrant/java/jdk-6u45-linux-x64-rpm.bin
+        headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
+        mode: 0775 
+    #   when: ansible_architecture == "x86_64"
+
+    # command: 'wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" jdk-6u45-linux-x64-rpm.bin'
+    
+    - name: unpacking java
+      command: /home/vagrant/java/jdk-6u45-linux-x64-rpm.bin
+        executable=/home/vagrant/java/jdk-6u45-linux-x64-rpm.bin
+        chdir=/home/vagrant/java/
+
+    - name: install java
+      yum: 
+        name=/home/vagrant/java/jdk-6u45-linux-amd64.rpm
+        state=present
+      become: true
+
+    - name: remove tmp files
+      file: 
+        path=/home/vagrant/java/
+        state=absent
+      become: true

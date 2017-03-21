@@ -1,0 +1,20 @@
+---
+- hosts: test
+  tasks:
+     
+    - name: Download java 7 JRE
+      get_url:
+        url: http://download.oracle.com/otn-pub/java/jdk/7u80-b15/jre-7u80-linux-x64.rpm
+        dest: /home/vagrant/jre-7u80-linux-x64.rpm
+        headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
+
+    - name: Install java 7 JRE
+      yum: 
+        name=/home/vagrant/jre-7u80-linux-x64.rpm
+        state=present
+      become: true
+
+    - name: Delete tmp files
+      file:
+        path=/home/vagrant/jre-7u80-linux-x64.rpm
+        state=absent

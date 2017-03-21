@@ -1,0 +1,37 @@
+---
+- hosts: test
+  tasks:
+
+    # java (создание папки что бы удалить потом распакованные файлы не из корня)
+    - name: mkdir java
+      file: 
+        path=/home/vagrant/java
+        state=directory
+        owner=vagrant
+        group=vagrant
+        mode=777
+
+    - name: download java 6 x32 rpm
+      get_url:
+        url: http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-i586-rpm.bin
+        dest: /home/vagrant/java/jdk-6u45-linux-i586-rpm.bin
+        headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
+        mode: 0775 
+    #   when: ansible_architecture == "i386"
+    
+    - name: unpacking java
+      command: /home/vagrant/java/jdk-6u45-linux-i586-rpm.bin
+        executable=/home/vagrant/java/jdk-6u45-linux-i586-rpm.bin
+        chdir=/home/vagrant/java/
+        
+    - name: install java
+      yum: 
+        name=/home/vagrant/java/jdk-6u45-linux-i586.rpm
+        state=present
+      become: true
+
+    - name: remove tmp files
+      file: 
+        path=/home/vagrant/java/
+        state=absent
+      become: true
