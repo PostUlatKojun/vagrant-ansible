@@ -1,0 +1,26 @@
+---
+- hosts: test
+  become: true
+  tasks: 
+
+    - name: Download and unarchive Apache-maven # вариант с скачиванием и распаковкой в одной задаче
+      unarchive:
+        src: http://apache.volia.net/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+        dest: /opt
+        remote_src: True
+        validate_certs: False
+
+    - name: create simlink
+      file:
+        src: /opt/apache-maven-3.3.9
+        dest: /opt/mvn
+        state: link
+
+    - name: shell
+      shell: sh -c 'echo M2_HOME=/opt/mvn >> /etc/environment'
+    
+    - name: create simlink 2
+      file:
+        src: /opt/mvn/bin/mvn
+        dest: /usr/bin/mvn
+        state: link

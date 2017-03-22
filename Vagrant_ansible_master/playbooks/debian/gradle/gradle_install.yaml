@@ -1,0 +1,33 @@
+---
+- hosts: test
+  become: true
+  tasks: 
+
+    - name: Prepared decompression
+      apt:
+        name: unzip
+        state: present
+
+    - name: Download and unarchive Gradle # вариант с скачиванием и распаковкой в одной задаче
+      unarchive:
+        src: https://services.gradle.org/distributions/gradle-3.4-bin.zip
+        dest: /opt
+        remote_src: True
+        validate_certs: False
+
+    - name: create simlink
+      file:
+        src: /opt/gradle-3.4
+        dest: /opt/gradle
+        state: link
+
+    - name: shell
+      shell: sh -c 'echo GRADLE_HOME=/opt/gradle >> /etc/environment'
+      become: true
+    
+    - name: create simlink 2
+      file:
+        src: /opt/gradle/bin/gradle
+        dest: /usr/bin/gradle
+        state: link
+      become: true

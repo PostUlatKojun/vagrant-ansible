@@ -1,0 +1,39 @@
+---
+- hosts: test
+  tasks: 
+
+    - name: Download Apache-ant # вариант с скачиванием и распаковкой в разных задачах
+      get_url:
+        url: https://www.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.bz2
+        dest: /home/vagrant/apache-ant-1.9.9-bin.tar.bz2
+        validate_certs: False
+      
+    - name: Unarchive Apache-ant
+      unarchive:
+        src: /home/vagrant/apache-ant-1.9.9-bin.tar.bz2
+        dest: /opt/
+        remote_src: True
+      become: true
+
+    - name: Remove temp files
+      file:
+        dest: /home/vagrant/apache-ant-1.9.9-bin.tar.bz2
+        state: absent
+
+    - name: create simlink
+      file:
+        src: /opt/apache-ant-1.9.9
+        dest: /opt/ant
+        state: link
+      become: true
+
+    - name: shell
+      shell: sh -c 'echo ANT_HOME=/opt/ant >> /etc/environment'
+      become: true
+    
+    - name: create simlink 2
+      file:
+        src: /opt/ant/bin/ant
+        dest: /usr/bin/ant
+        state: link
+      become: true
