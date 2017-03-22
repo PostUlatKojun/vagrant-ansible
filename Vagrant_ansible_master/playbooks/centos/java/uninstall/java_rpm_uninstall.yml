@@ -5,25 +5,11 @@
 
     - name: unistall java 6 or 7 x32
       yum:
-        name=jdk.i586
+        name={{ item }}
         state=absent
-      
-    - name: unistall java 8 x32
-      yum:
-        name=jdk1.8.0_101.i586
-        state=absent
-
-    - name: unistall java 6 x64
-      yum:
-        name=jdk.x86_64
-        state=absent  
-    
-    - name: unistall java 7 x64
-      yum:
-        name=jre.x86_64
-        state=absent  
-
-    - name: unistall java 8 x64
-      yum:
-        name=jdk1.8.0_121.x86_64
-        state=absent
+      with_items:
+        - jdk.i586 # java 6 or 7 x32
+        - jdk1.8.0_101.i586 # java 8 x32
+        - jdk.x86_64 # java 6 x64
+        - jre.x86_64 # java 7 jre x64
+        - jdk1.8.0_121.x86_64 # java 8 x64
