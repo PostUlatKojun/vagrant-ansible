@@ -1,6 +1,13 @@
 ---
 - hosts: test
   tasks:
+
+    - name: install wget
+      yum:
+        name: wget
+        state: present
+        update_cache: yes
+      become: true
      
     - name: Download java 7 JRE
       get_url:
