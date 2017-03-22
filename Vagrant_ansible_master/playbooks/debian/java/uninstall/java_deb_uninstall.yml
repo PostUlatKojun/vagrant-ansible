@@ -1,45 +1,13 @@
 ---
 - hosts: test
+  become: true
   tasks:
 
-    - name: uninstall java 7
+    - name: uninstall java deb
       apt:
-        name=oracle-java7-jdk
+        name={{ item }}
         state=absent
-      become: true
-
-    - name: uninstall java 8
-      apt:
-        name=oracle-java8-jdk
-        state=absent
-      become: true
-
-    - name: uninstall java 6
-      apt:
-        name=oracle-java6-jdk
-        state=absent
-      become: true
-    
-    - name: uninstall java 6  
-      apt:
-        name=oracle-java6-installer
-        state=absent
-      become: true
-
-    - name: uninstall java 7  
-      apt:
-        name=oracle-java7-installer
-        state=absent
-      become: true
-
-    - name: uninstall java 8  
-      apt:
-        name=oracle-java8-installer
-        state=absent
-      become: true
-
-    - name: uninstall java 9  
-      apt:
-        name=oracle-java9-installer
-        state=absent
-      become: true
+      with_items:
+        - oracle-java6-jdk # java 6
+        - oracle-java7-jdk # java 7
+        - oracle-java8-jdk # java 8
