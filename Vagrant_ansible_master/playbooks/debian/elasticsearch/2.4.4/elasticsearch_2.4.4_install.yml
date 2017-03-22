@@ -7,17 +7,3 @@
       apt:
         deb: https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.4/elasticsearch-2.4.4.deb
         state: present
-
-    - name: Configure Elasticsearch
-      blockinfile:
-        dest: /etc/elasticsearch/elasticsearch.yml
-        block: |
-          network.host: 0.0.0.0
-          http.port: 9200
-          transport.host: localhost
-          transport.tcp.port: 9300
-
-    #- name: Start service Elasticsearch
-    #  service:
-    #    name: elasticsearch
-    #    state: started
