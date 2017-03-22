@@ -1,0 +1,16 @@
+---
+- hosts: test
+  tasks: 
+
+    - name: Prepared decompression
+      apt:
+        name: unzip
+        state: present
+      become: yes
+
+    - name: Download and unarchive Kafka # вариант с скачиванием и распаковкой в одной задаче
+      unarchive:
+        src: http://apache.cp.if.ua/kafka/0.10.2.0/kafka_2.11-0.10.2.0.tgz
+        dest: /home/vagrant/
+        remote_src: True
+        validate_certs: False
