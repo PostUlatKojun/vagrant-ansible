@@ -1,0 +1,14 @@
+---
+- hosts: test
+  become: true
+  tasks:
+
+    - name: uninstall java ubuntu
+      apt:
+        name={{ item }}
+        state=absent
+      with_items:
+        - oracle-java6-installer # java 6
+        - oracle-java7-installer # java 7
+        - oracle-java8-installer # java 8
+        - oracle-java9-installer # java 9 early access
