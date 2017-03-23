@@ -3,7 +3,7 @@
   become: true
   tasks:
 
-    - name: unistall java 6 or 7 x32
+    - name: unistall java rpm
       yum:
         name={{ item }}
         state=absent
