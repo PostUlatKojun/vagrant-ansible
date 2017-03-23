@@ -4,11 +4,9 @@
   tasks:
      
     - name: install wget
-      yum_repository:
-        name: jenkins
-        description: jenkins
-        baseurl: http://pkg.jenkins-ci.org/redhat/jenkins.repo
-        file: jenkins
+      get_url:
+        url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+        dest: /etc/yum.repos.d/jenkins.repo
 
     - name: add key
       rpm_key:
