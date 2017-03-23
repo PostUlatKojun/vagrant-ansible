@@ -1,0 +1,22 @@
+---
+- hosts: test
+  become: true
+  tasks:
+     
+    - name: install wget
+      yum_repository:
+        name: jenkins
+        description: jenkins
+        baseurl: http://pkg.jenkins-ci.org/redhat/jenkins.repo
+        file: jenkins
+
+    - name: add key
+      rpm_key:
+        state: present
+        key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+    - name: Install jenkins
+      yum:
+        name: jenkins
+        state: present
+        update_cache: yes
