@@ -1,0 +1,7 @@
+- hosts: test
+  become: true
+  tasks: 
+
+  - name: Install apt-transport-https
+    command: '/etc/init.d/jenkins start'
+      
