@@ -1,0 +1,9 @@
+- hosts: test
+  become: true
+  tasks: 
+
+  - name: Download and unarchive TeamCity
+    unarchive: 
+      src: https://download.jetbrains.com/teamcity/TeamCity-10.0.5.tar.gz
+      dest: /opt
+      remote_src: true

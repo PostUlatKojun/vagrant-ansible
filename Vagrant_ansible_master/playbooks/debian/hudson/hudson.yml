@@ -1,0 +1,16 @@
+---
+- hosts: test
+  become: true
+  tasks: 
+
+    - name: Add Hudson repos
+      apt_repository:
+        repo: 'deb http://hudson-ci.org/debian /'
+        state: present
+        filename: 'hudson'
+
+    - name: Install Hudson
+      apt:
+        name: hudson
+        state: present
+        update_cache: true
