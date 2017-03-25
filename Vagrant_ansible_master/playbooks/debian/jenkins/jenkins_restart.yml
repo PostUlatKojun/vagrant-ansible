@@ -1,0 +1,7 @@
+- hosts: test
+  become: true
+  tasks: 
+
+  - name: Jenkins restart
+    command: '/etc/init.d/jenkins restart'
+      
