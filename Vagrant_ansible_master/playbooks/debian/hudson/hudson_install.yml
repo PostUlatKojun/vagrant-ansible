@@ -13,4 +13,5 @@
       apt:
         name: hudson
         state: present
+        allow_unauthenticated: yes
         update_cache: true
