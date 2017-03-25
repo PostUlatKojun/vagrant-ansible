@@ -1,17 +1,17 @@
 ---
 - hosts: test
+  become: true
   tasks: 
 
     - name: Prepared decompression
       apt:
         name: unzip
         state: present
-      become: yes
 
-    - name: Download and unarchive Kafka # вариант с скачиванием и распаковкой в одной задаче
+    - name: Download and unarchive Tomcat # вариант с скачиванием и распаковкой в одной задаче
       unarchive:
         src: http://apache.volia.net/tomcat/tomcat-9/v9.0.0.M18/bin/apache-tomcat-9.0.0.M18.tar.gz
-        dest: /home/vagrant/
+        dest: /opt
         remote_src: True
         validate_certs: False
 
