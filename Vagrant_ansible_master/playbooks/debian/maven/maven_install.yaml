@@ -16,7 +16,7 @@
         dest: /opt/mvn
         state: link
 
-    - name: shell
+    - name: path M2_HOME
       shell: sh -c 'echo M2_HOME=/opt/mvn >> /etc/environment'
     
     - name: create simlink 2
