@@ -15,4 +15,17 @@
         remote_src: True
         validate_certs: False
 
-
+#    - name: create simlink
+#      file:
+#        src: /opt/apache-tomcat-9.0.0.M18
+#        dest: /opt/tomcat9
+#        state: link
+#
+    - name: shell
+      shell: sh -c 'echo CATALINA_HOME=/opt/apache-tomcat-9.0.0.M18 >> /etc/environment'
+#
+#    - name: create simlink 2
+#      file:
+#        src: /opt/mvn/bin/mvn
+#        dest: /usr/bin/mvn
+#        state: link
