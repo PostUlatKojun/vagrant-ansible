@@ -1,8 +1,8 @@
 vagrant-ansible-slave ansible_host=192.168.33.112
-#vagrant-ansible-debian ansible_host=192.168.33.124
-#vagrant-ansible-centos ansible_host=192.168.33.127
+# vagrant-ansible-debian ansible_host=192.168.33.124
+# vagrant-ansible-centos ansible_host=192.168.33.127
 
 [test]
 vagrant-ansible-slave
-#vagrant-ansible-debian
-#vagrant-ansible-centos
+# vagrant-ansible-debian
+# vagrant-ansible-centos
