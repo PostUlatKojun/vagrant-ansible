@@ -17,15 +17,18 @@ Vagrant.configure(2) do |config|
   config.vm.define :Vagrant_ansible_master do |t| # name машины в vagrant global-status
   end
 
-  config.vm.synced_folder ".ssh_debian_ansible_master", "/home/vagrant/.ssh/", owner: "vagrant", group: "vagrant", mount_options: ["dmode=700,fmode=600"]
+  config.vm.provision "file", source: ".ssh_debian_ansible_master/id_rsa", destination: "/home/vagrant/.ssh/id_rsa" # Debian linux only
+  config.vm.provision "file", source: ".ssh_debian_ansible_master/id_rsa.pub", destination: "/home/vagrant/.ssh/id_rsa.pub" # Debian linux only
 
-  #config.vm.provision "file", source: ".ssh_debian_ansible_master/id_rsa", destination: "/home/vagrant/.ssh/id_rsa"
-  #config.vm.provision "file", source: ".ssh_debian_ansible_master/id_rsa.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
+  #config.vm.synced_folder ".ssh_debian_ansible_master", "/home/vagrant/.ssh/", owner: "vagrant", group: "vagrant", mount_options: ["dmode=700,fmode=600"] # Windows only
+  #  rm  /home/vagrant/.ssh/authorized_keys # Windows only replace to shell
+
+  # Windows requires shell, for debian connection timeout and reload
   config.vm.provision "shell", inline: <<-SHELL
-    rm  /home/vagrant/.ssh/authorized_keys
     echo "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAgLwj3Jq5QAmZX7B/8Of6y+2wt485hiThkrJ34OBmSg/2N4AvjP+Hlo/edwFRryD1mtFT2mPrilqQ2ElJKoIgzDYsx3izzkLNAK5ii0JLVZjmZeyHueQMwzxz80cwVjpn8kPqGYw3y4JVBhFljcbhFprqGJgogyHMq5t6spGv9k3QGbqRTgAGmoKvhcCCfUHtLJHDc/++uMuknjuA7Kvb4zby7ZDMYbYF27AJMBK6Tvi2DJsFepm8BnGIcywA0EQ3ym5NeEU6TNgXmRiFyEoQDc16cihW25K5Y0Ab2M/tnoHw+x9CrUhMr6CR+cTq6OIaY1fLdqyI/HBCLQUvcccwuQ== rsa-key-20160609" >> /home/vagrant/.ssh/authorized_keys
   SHELL
 
   config.vm.provision "shell", path: '../provisions/provision_master.sh'
   
 end
+
