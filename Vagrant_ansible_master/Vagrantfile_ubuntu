@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.network "private_network", ip: "192.168.33.12"
+  config.vm.synced_folder "ansible/", "/etc/ansible"
+  config.vm.synced_folder "playbooks/", "/home/vagrant/ansible/playbooks"
+
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Vagrant ansible master" 
+
+  end
+
+  config.vm.define :Vagrant_ansible_master do |t| # name машины в vagrant global-status
+  end
+
+  config.vm.provision "file", source: ".ssh_ubuntu_ansible_master/id_rsa", destination: "/home/vagrant/.ssh/id_rsa"
+  config.vm.provision "file", source: ".ssh_ubuntu_ansible_master/id_rsa.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
+
+  config.vm.provision "shell", path: '../provisions/provision_master.sh'
+  
+end
+

@@ -1,3 +1,4 @@
 **/.vagrant
 *.retry
 known_hosts
+authorized_keys
