@@ -21,6 +21,11 @@ Vagrant.configure(2) do |config|
     	echo "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAgLwj3Jq5QAmZX7B/8Of6y+2wt485hiThkrJ34OBmSg/2N4AvjP+Hlo/edwFRryD1mtFT2mPrilqQ2ElJKoIgzDYsx3izzkLNAK5ii0JLVZjmZeyHueQMwzxz80cwVjpn8kPqGYw3y4JVBhFljcbhFprqGJgogyHMq5t6spGv9k3QGbqRTgAGmoKvhcCCfUHtLJHDc/++uMuknjuA7Kvb4zby7ZDMYbYF27AJMBK6Tvi2DJsFepm8BnGIcywA0EQ3ym5NeEU6TNgXmRiFyEoQDc16cihW25K5Y0Ab2M/tnoHw+x9CrUhMr6CR+cTq6OIaY1fLdqyI/HBCLQUvcccwuQ== rsa-key-20160609" >> /home/vagrant/.ssh/authorized_keys
   	SHELL
 
+    master_debian.vm.provision "shell", inline: <<-SHELL
+      chmod 600 /home/vagrant/.ssh/id_rsa
+      chmod 600 /home/vagrant/.ssh/id_rsa.pub
+    SHELL
+
   	master_debian.vm.provision "shell", path: 'provisions/provision_master.sh'
   end
 
@@ -39,6 +44,12 @@ Vagrant.configure(2) do |config|
   	master_ubuntu.vm.provision "file", source: ".ssh/.ssh_ubuntu_ansible_master/id_rsa.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
 
   	master_ubuntu.vm.provision "shell", path: 'provisions/provision_master.sh'
+
+    master_ubuntu.vm.provision "shell", inline: <<-SHELL
+      chmod 600 /home/vagrant/.ssh/id_rsa
+      chmod 600 /home/vagrant/.ssh/id_rsa.pub
+    SHELL
+
   end
 
   config.vm.define :slave_ansible_ubuntu, autostart: false do |slave_ubuntu|
