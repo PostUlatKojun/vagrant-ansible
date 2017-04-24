@@ -7,7 +7,7 @@ Vagrant.configure(2) do |config|
   	master_debian.vm.box = "debian/jessie64"
   	master_debian.vm.boot_timeout = 120
   	master_debian.vm.network "private_network", ip: "192.168.33.12"
-  	master_debian.vm.synced_folder "ansible/ansible/", "/etc/ansible"
+  	master_debian.vm.synced_folder "ansible/ansible/", "/home/vagrant/ansible/ansible"
   	master_debian.vm.synced_folder "ansible/playbooks/", "/home/vagrant/ansible/playbooks"
 
   	master_debian.vm.provider "virtualbox" do |vmd|
@@ -33,7 +33,7 @@ Vagrant.configure(2) do |config|
 
 	  master_ubuntu.vm.box = "ubuntu/trusty64"
 	  master_ubuntu.vm.network "private_network", ip: "192.168.33.12"
-	  master_ubuntu.vm.synced_folder "ansible/ansible/", "/etc/ansible"
+	  master_ubuntu.vm.synced_folder "ansible/ansible/", "/home/vagrant/ansible/ansible"
 	  master_ubuntu.vm.synced_folder "ansible/playbooks/", "/home/vagrant/ansible/playbooks"
 
 	  config.vm.provider "virtualbox" do |vmu|
