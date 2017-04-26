@@ -1,5 +1,5 @@
 ---
-- hosts: test
+- hosts: linux_centos
   tasks:
      
     - name: download java 7 x32 rpm
