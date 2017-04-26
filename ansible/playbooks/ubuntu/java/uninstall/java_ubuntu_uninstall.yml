@@ -1,5 +1,5 @@
 ---
-- hosts: test
+- hosts: linux_ubuntu
   become: true
   tasks:
 
