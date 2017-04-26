@@ -1,5 +1,5 @@
 ---
-- hosts: test # применяется для всех хостов
+- hosts: linux_debian # применяется для всех хостов
   become: yes
   tasks: # перечень задач
 

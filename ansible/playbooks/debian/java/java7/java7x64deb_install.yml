@@ -1,5 +1,5 @@
 ---
-- hosts: test
+- hosts: linux_debian
   tasks:
 
     - name: add rep java-package # задача исполняется только для Debian

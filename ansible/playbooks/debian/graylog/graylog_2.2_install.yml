@@ -1,5 +1,5 @@
 ---
-- hosts: test # Пока только для debian
+- hosts: linux_debian # Пока только для debian
   become: true
   tasks: 
 

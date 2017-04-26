@@ -1,5 +1,5 @@
 ---
-- hosts: test
+- hosts: linux_debian
   tasks: 
 
     - name: Download Apache-ant # вариант с скачиванием и распаковкой в разных задачах

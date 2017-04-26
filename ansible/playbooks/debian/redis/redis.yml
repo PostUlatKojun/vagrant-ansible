@@ -1,5 +1,5 @@
 ---
-- hosts: test
+- hosts: linux_debian
   tasks: 
 
     - name: Download and unarchive redis # вариант с скачиванием и распаковкой в одной задаче
