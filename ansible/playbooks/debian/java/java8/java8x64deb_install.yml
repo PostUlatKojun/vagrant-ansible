@@ -19,8 +19,8 @@
 
     - name: download java 8 x64
       get_url:
-        url: http://download.oracle.com/otn-pub/java/jdk/8u112-b15/jdk-8u112-linux-x64.tar.gz
-        dest: /home/vagrant/jdk-8u112-linux-x64.tar.gz
+        url: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz
+        dest: /home/vagrant/jdk-8u131-linux-x64.tar.gz
         headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
         
     - name: make java8.deb
@@ -40,7 +40,7 @@
       become: true
 
     - name: make java8.deb 2
-      raw:  make-jpkg jdk-8u112-linux-x64.tar.gz < Yes_package
+      raw:  make-jpkg jdk-8u131-linux-x64.tar.gz < Yes_package
 
     - name: rm temp files
       file: 
@@ -49,18 +49,18 @@
 
     - name: install java 8
       apt: 
-        deb=/home/vagrant/oracle-java8-jdk_8u112_amd64.deb
+        deb=/home/vagrant/oracle-java8-jdk_8u131_amd64.deb
         state=present
       become: true
 
     - name: remove tmp files java8.tar.gz
       file:
-        path=/home/vagrant/jdk-8u112-linux-x64.tar.gz
+        path=/home/vagrant/jdk-8u131-linux-x64.tar.gz
         state=absent
 
     - name: remove tmp files java8.deb
       file: 
-        path=/home/vagrant/oracle-java8-jdk_8u112_amd64.deb
+        path=/home/vagrant/oracle-java8-jdk_8u131_amd64.deb
         state=absent
 
     - name: remove java-package
