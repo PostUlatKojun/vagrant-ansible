@@ -9,17 +9,14 @@ Vagrant.configure(2) do |config|
   	master_debian.vm.network "private_network", ip: "192.168.33.12"
   	master_debian.vm.synced_folder "ansible/ansible/", "/home/vagrant/ansible/ansible"
   	master_debian.vm.synced_folder "ansible/playbooks/", "/home/vagrant/ansible/playbooks"
-
+    master_debian.ssh.insert_key = false
+    
   	master_debian.vm.provider "virtualbox" do |vmd|
     	vmd.name = "Vagrant ansible master debian" 
   	end
 
   	master_debian.vm.provision "file", source: ".ssh/.ssh_debian_ansible_master/id_rsa", destination: "/home/vagrant/.ssh/id_rsa"
   	master_debian.vm.provision "file", source: ".ssh/.ssh_debian_ansible_master/id_rsa.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
-
-  	master_debian.vm.provision "shell", inline: <<-SHELL
-    	echo "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAgLwj3Jq5QAmZX7B/8Of6y+2wt485hiThkrJ34OBmSg/2N4AvjP+Hlo/edwFRryD1mtFT2mPrilqQ2ElJKoIgzDYsx3izzkLNAK5ii0JLVZjmZeyHueQMwzxz80cwVjpn8kPqGYw3y4JVBhFljcbhFprqGJgogyHMq5t6spGv9k3QGbqRTgAGmoKvhcCCfUHtLJHDc/++uMuknjuA7Kvb4zby7ZDMYbYF27AJMBK6Tvi2DJsFepm8BnGIcywA0EQ3ym5NeEU6TNgXmRiFyEoQDc16cihW25K5Y0Ab2M/tnoHw+x9CrUhMr6CR+cTq6OIaY1fLdqyI/HBCLQUvcccwuQ== rsa-key-20160609" >> /home/vagrant/.ssh/authorized_keys
-  	SHELL
 
     master_debian.vm.provision "shell", inline: <<-SHELL
       chmod 600 /home/vagrant/.ssh/id_rsa
@@ -71,6 +68,7 @@ Vagrant.configure(2) do |config|
   	slave_debian.vm.boot_timeout = 120
   	slave_debian.vm.network "private_network", ip: "192.168.33.124"
   	slave_debian.vm.synced_folder "yandextank/", "/home/vagrant/yandextank"
+    slave_debian.ssh.insert_key = false
 
   	slave_debian.vm.provider "virtualbox" do |vsd|
     	vsd.name = "Vagrant ansible slave debian"   
