@@ -10,14 +10,14 @@
 
     - name: Download and unarchive Gradle # вариант с скачиванием и распаковкой в одной задаче
       unarchive:
-        src: https://services.gradle.org/distributions/gradle-3.4-bin.zip
+        src: https://services.gradle.org/distributions/gradle-3.5-bin.zip
         dest: /opt
         remote_src: True
         validate_certs: False
 
     - name: create simlink
       file:
-        src: /opt/gradle-3.4
+        src: /opt/gradle-3.5
         dest: /opt/gradle
         state: link
 
