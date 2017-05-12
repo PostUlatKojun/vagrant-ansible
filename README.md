@@ -4,8 +4,8 @@ Develop &amp; test your Ansible playbooks with Vagrant
 Версии:  
 
 Debian: 3.16.0-4-amd64 #1 SMP Debian 3.16.39-1 (2016-12-30) x86_64 GNU/Linux  
-Windows 7
-Windows 10
+Windows 7  
+Windows 10  
 
 Virtualbox: 5.1.22 r115126 (Qt5.6.2)
 Vagrant: 1.9.4
