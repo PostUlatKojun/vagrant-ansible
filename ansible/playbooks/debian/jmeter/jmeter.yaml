@@ -1,0 +1,38 @@
+---
+- hosts: linux_debian
+  tasks: 
+
+    - name: Download Jmeter # вариант с скачиванием и распаковкой в разных задачах
+      get_url:
+        url: http://apache.volia.net//jmeter/binaries/apache-jmeter-3.2.tgz
+        dest: /home/vagrant/apache-jmeter-3.2.tgz
+      
+    - name: Unarchive Jmeter
+      unarchive:
+        src: /home/vagrant/apache-jmeter-3.2.tgz
+        dest: /opt/
+        remote_src: True
+      become: true
+
+    - name: Remove temp files
+      file:
+        dest: /home/vagrant/apache-jmeter-3.2.tgz
+        state: absent
+
+    - name: create simlink
+      file:
+        src: /opt/apache-jmeter-3.2
+        dest: /opt/jmeter
+        state: link
+      become: true
+
+    - name: shell
+      shell: sh -c 'echo JMETER_HOME=/opt/jmeter >> /etc/environment'
+      become: true
+    
+    - name: create simlink 2
+      file:
+        src: /opt/jmeter/bin/jmeter
+        dest: /usr/bin/jmeter
+        state: link
+      become: true

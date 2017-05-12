@@ -1,0 +1,40 @@
+---
+- hosts: linux_debian
+  tasks: 
+
+    - name: Download Vegeta # вариант с скачиванием и распаковкой в разных задачах
+      get_url:
+        url: https://github.com/tsenart/vegeta/releases/download/v6.3.0/vegeta-v6.3.0-linux-amd64.tar.gz
+        dest: /home/vagrant/vegeta-v6.3.0-linux-amd64.tar.gz
+      
+    - name: mkdir
+      file:
+        dest: /opt/vegeta-v6.3.0/
+        state: directory
+      become: true
+
+    - name: Unarchive Vegeta
+      unarchive:
+        src: /home/vagrant/vegeta-v6.3.0-linux-amd64.tar.gz
+        dest: /opt/vegeta-v6.3.0/
+        remote_src: True
+      become: true
+
+    - name: Remove temp files
+      file:
+        dest: /home/vagrant/vegeta-v6.3.0-linux-amd64.tar.gz
+        state: absent
+
+    - name: create simlink
+      file:
+        src: /opt/vegeta-v6.3.0
+        dest: /opt/vegeta
+        state: link
+      become: true
+
+    - name: create simlink 2
+      file:
+        src: /opt/vegeta/vegeta
+        dest: /usr/bin/vegeta
+        state: link
+      become: true
