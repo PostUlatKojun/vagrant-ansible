@@ -4,13 +4,16 @@ Develop &amp; test your Ansible playbooks with Vagrant
 Версии:  
 
 Debian: 3.16.0-4-amd64 #1 SMP Debian 3.16.39-1 (2016-12-30) x86_64 GNU/Linux  
-Virtualbox: 5.1.18  
-Vagrant: 1.9.3  
-vagrant box: ubuntu/trusty64 (virtualbox, 20170222.0.0)  
+Windows 7  
+Windows 10  
+
+Virtualbox: 5.1.22 r115126 (Qt5.6.2)
+Vagrant: 1.9.4
+vagrant box: ubuntu/trusty64 (virtualbox, 20170505.0.0)  
 ansible: 2.3.0.0  
 apache-ant: 1.9.9  
-apache-maven: 3.3.9  
-gradle: 3.4  
+apache-maven: 3.5.0  
+gradle: 3.5  
 elasticsearch: 5.2.2  
 kibana: 5.2.2  
 yandex-tank: 1.7.4
