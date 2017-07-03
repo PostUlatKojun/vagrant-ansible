@@ -7,10 +7,12 @@ Vagrant.configure(2) do |config|
   	master_debian.vm.box = "debian/jessie64"
   	master_debian.vm.boot_timeout = 120
   	master_debian.vm.network "private_network", ip: "192.168.33.12"
-  	master_debian.vm.synced_folder "ansible/ansible/", "/home/vagrant/ansible/ansible"
+    master_debian.vm.synced_folder "ansible/ansible/", "/home/vagrant/ansible/ansible"
   	master_debian.vm.synced_folder "ansible/playbooks/", "/home/vagrant/ansible/playbooks"
     master_debian.ssh.insert_key = false
-    
+
+    master_debian.vm.synced_folder ".", "/vagrant", type: "virtualbox" # only for Windows
+
   	master_debian.vm.provider "virtualbox" do |vmd|
     	vmd.name = "Vagrant ansible master debian" 
   	end
@@ -70,9 +72,11 @@ Vagrant.configure(2) do |config|
   	slave_debian.vm.synced_folder "yandextank/", "/home/vagrant/yandextank"
     slave_debian.ssh.insert_key = false
 
+    slave_debian.vm.synced_folder ".", "/vagrant", type: "virtualbox" # only for Windows
+
   	slave_debian.vm.provider "virtualbox" do |vsd|
     	vsd.name = "Vagrant ansible slave debian"   
-    	vsd.memory = "1024"
+    #	vsd.memory = "2048"
   	end
 
 	  slave_debian.vm.provision "shell", path: 'provisions/provision_slave.sh'
@@ -83,6 +87,8 @@ Vagrant.configure(2) do |config|
 		slave_centos.vm.box = "centos/7"
   	slave_centos.vm.network "private_network", ip: "192.168.33.127" # config.vm.network "public_network", ip: "192.168.0.127"
   	slave_centos.ssh.insert_key = false
+
+    slave_centos.vm.synced_folder ".", "/vagrant", type: "virtualbox" # only for Windows
 
   	slave_centos.vm.provider "virtualbox" do |vsc|
     	vsc.name = "Vagrant ansible slave centos7 64"   
