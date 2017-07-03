@@ -12,4 +12,4 @@
         - jdk1.8.0_101.i586 # java 8 x32
         - jdk.x86_64 # java 6 x64
         - jre.x86_64 # java 7 jre x64
-        - jdk1.8.0_121.x86_64 # java 8 x64
+        - jdk1.8.0_131.x86_64 # java 8 x64
