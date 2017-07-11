@@ -11,3 +11,6 @@
         - oracle-java6-jdk # java 6
         - oracle-java7-jdk # java 7
         - oracle-java8-jdk # java 8
+        - oracle-java8-installer # java 8 ppa
+        - ca-certificates # java 8 ppa
+        - oracle-java8-set-default # java 8 ppa
