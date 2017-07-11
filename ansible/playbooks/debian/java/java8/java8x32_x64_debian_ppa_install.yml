@@ -1,0 +1,36 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks: 
+  - name: Install add-apt-repository
+    apt: 
+      name: software-properties-common
+      state: latest
+
+  - name: Adding Oracle Java8 Repo Key
+    apt_key:
+      keyserver: 'hkp://keyserver.ubuntu.com:80'
+      id: 'EEA14886'
+      state: "present"
+
+  - name: Add Oracle Java Repository
+    apt_repository: 
+      repo: 'deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main'
+      state: present
+
+  - name: Accept Java 8 Licence
+    debconf: 
+      name='oracle-java8-installer' 
+      question='shared/accepted-oracle-license-v1-1' 
+      value='true'
+      vtype='select'
+
+  - name: Install Oracle Java 8
+    apt:
+      name={{item}}
+      state=latest
+      update_cache=yes
+    with_items:
+      - oracle-java8-installer
+      - ca-certificates
+      - oracle-java8-set-default
