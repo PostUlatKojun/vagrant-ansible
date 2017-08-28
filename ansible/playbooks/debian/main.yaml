@@ -1,0 +1,9 @@
+---
+- hosts: linux_debian
+  tasks:
+  #   - debug:
+  #       msg: "play"
+
+# - include: java/java8/java8x32_x64_debian_ppa_install.yml
+
+# - include: jenkins/jenkins_install.yml
