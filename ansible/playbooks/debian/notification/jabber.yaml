@@ -1,0 +1,17 @@
+---
+- hosts: linux_debian
+  tasks:
+
+    - name: install python-xmpp 
+      apt:
+        name=python-xmpp 
+        state=present
+        update_cache=yes
+      become: true    
+    
+    - name: test bot
+      jabber:
+        user: # sender_jabber_account_name
+        password: # sender_jabber_account_password
+        to: # destination_jabber_account
+        msg: Ansible task finished

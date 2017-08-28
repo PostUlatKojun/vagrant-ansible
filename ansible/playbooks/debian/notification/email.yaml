@@ -1,0 +1,15 @@
+---
+- hosts: linux_debian
+  tasks:
+
+    - name: email
+      mail:
+        host: smtp.gmail.com
+        port: 465
+        username: # send_email_adress
+        password: # send_email_adress_password
+        secure: try
+        to: # destination_email_adress
+        subject: Ansible-report
+        body: 'System {{ ansible_hostname }} has been successfully provisioned.'
+      # delegate_to: localhost # не уверен что вообще нужно
