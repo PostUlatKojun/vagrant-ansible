@@ -1,0 +1,11 @@
+---
+- hosts: linux_debian
+  tasks:
+
+    - name: Download jenkins-cli
+      get_url:
+        url: http://127.0.0.1:8080/jnlpJars/jenkins-cli.jar
+        dest: /home/vagrant/jenkins-cli.jar
+
+    - name: Install ansible plugin
+      shell: java -jar /home/vagrant/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin ansible

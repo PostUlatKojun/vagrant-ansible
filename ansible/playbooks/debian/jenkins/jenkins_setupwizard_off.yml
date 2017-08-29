@@ -1,0 +1,11 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks:
+
+    - name: Jenkins - configure | Turn off Jenkins setup wizard
+      lineinfile: 
+        dest: /etc/default/jenkins
+        regexp: '^JAVA_ARGS=' 
+        line: 'JAVA_ARGS="-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"'
+      # notify: restart jenkins
