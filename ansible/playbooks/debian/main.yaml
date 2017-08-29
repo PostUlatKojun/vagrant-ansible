@@ -4,6 +4,20 @@
   #   - debug:
   #       msg: "play"
 
-# - include: java/java8/java8x32_x64_debian_ppa_install.yml
+- include: java/java8/java8x32_x64_debian_ppa_install.yml
 
-# - include: jenkins/jenkins_install.yml
+- include: jenkins/jenkins_install.yml
+    
+# - include: pause.yml
+
+# - include: jenkins/jenkins_setupwizard_off.yml
+
+# - include: jenkins/jenkins_restart.yml
+    
+# - include: pause.yml
+
+# - include: jenkins/jenkins_config.yml
+
+# - include: jenkins/jenkins_restart.yml
+
+- include: notification/slack.yaml
