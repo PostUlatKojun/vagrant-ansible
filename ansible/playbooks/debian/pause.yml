@@ -1,0 +1,7 @@
+---
+- hosts: linux_debian
+  tasks:
+
+    - name: pause 25 sec
+      pause:
+        seconds: 25
