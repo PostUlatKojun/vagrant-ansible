@@ -1,0 +1,9 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks:
+
+    - name: install apache
+      apt:
+        name: apache2
+        state: present
