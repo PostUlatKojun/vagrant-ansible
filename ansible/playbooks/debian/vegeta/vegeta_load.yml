@@ -1,0 +1,13 @@
+---
+- hosts: linux_debian
+  tasks:
+
+    - name: Vegeta load
+      shell: "echo 'GET https://blog.statusok.com/' | vegeta attack -duration=5s | vegeta report -reporter=plot -output=report.html"
+
+    - name: Copy report
+      copy:
+        src: /home/vagrant/report.html
+        dest: /var/www/html/index.html
+        remote_src: true
+      become: true
