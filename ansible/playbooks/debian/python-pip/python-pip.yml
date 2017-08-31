@@ -1,0 +1,9 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks:
+
+    - name: install python-pip
+      apt:
+        name: python-pip
+        state: present
