@@ -1,0 +1,24 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks: 
+
+    - name: Download and unarchive siege
+      unarchive:
+        src: http://download.joedog.org/siege/siege-latest.tar.gz
+        dest: /opt
+        remote_src: True
+        # validate_certs: False
+
+    - name: Configure siege
+      command: ./configure
+        chdir=/opt/siege-4.0.2/
+
+    - name: Make siege
+      make:
+        chdir: /opt/siege-4.0.2/
+
+    - name: Make install siege 
+      make:
+        chdir: /opt/siege-4.0.2/
+        target: install
