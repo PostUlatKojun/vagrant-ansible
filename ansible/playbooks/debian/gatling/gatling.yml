@@ -1,0 +1,44 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks: 
+
+    - name: Install unzip
+      apt:
+        name: unzip
+        state: present
+
+    - name: Download and unarchive gattling
+      unarchive:
+        src: https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/2.3.0/gatling-charts-highcharts-bundle-2.3.0-bundle.zip
+        dest: /opt
+        remote_src: True
+        # validate_certs: False
+
+    - name: Create rungattling file
+      file:
+        path: /home/vagrant/gatling
+        owner: vagrant
+        group: vagrant
+        mode: 0755
+        state: touch
+      become: False
+
+    - name: Create rungattling file
+      shell: echo "sudo sh /opt/gatling-charts-highcharts-bundle-2.3.0/bin/gatling.sh" > /home/vagrant/gatling
+      become: false
+
+    #- name: create simlink
+    #  file:
+    #    src: /opt/gatling-charts-highcharts-bundle-2.3.0/bin/gatling.sh
+    #    dest: /opt/gatling
+    #    state: link
+
+    #- name: path GATLING_HOME
+    #  shell: sh -c 'echo GATLING_HOME=/opt/gatling-charts-highcharts-bundle-2.3.0 >> /etc/environment'
+   
+    #- name: create simlink 2
+    #  file:
+    #    src: /opt/gatling-charts-highcharts-bundle-2.3.0/bin/gatling
+    #    dest: /usr/bin/gatling
+    #    state: link
