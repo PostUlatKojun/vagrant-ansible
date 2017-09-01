@@ -1,0 +1,36 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks: 
+
+    - name: Download and unarchive tsung
+      unarchive:
+        src: http://tsung.erlang-projects.org/dist/tsung-1.7.0.tar.gz
+        dest: /opt
+        remote_src: True
+        # validate_certs: False
+
+    - name: Install erlang
+      apt:
+        name: erlang
+        state: present
+        update_cache: yes
+
+    - name: Configure tsung
+      command: ./configure
+        chdir=/opt/tsung-1.7.0/
+
+    - name: Make tsung
+      make:
+        chdir: /opt/tsung-1.7.0/
+
+    - name: Make install tsung 
+      make:
+        chdir: /opt/tsung-1.7.0/
+        target: install
+
+    - name: Delete source tsung
+      file:
+        state: absent
+        path: "/opt/tsung-1.7.0/"
+    
