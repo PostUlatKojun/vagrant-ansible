@@ -1,0 +1,9 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks: 
+
+    - name: Install lxde
+      apt:
+        name: lxde
+        state: present
