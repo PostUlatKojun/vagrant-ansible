@@ -1,0 +1,58 @@
+---
+- hosts: linux_ubuntu
+  become: true
+  tasks: 
+
+  - name: Install curl/gnupg-curl
+    apt:
+      name={{item}}
+      state=latest
+      update_cache=yes
+    with_items:
+      - gnupg-curl
+      - curl
+
+  - name: Add key MongoDB
+    apt_key:
+      url: "https://www.mongodb.org/static/pgp/server-3.4.asc"
+      state: present
+      validate_certs: no
+
+  - name: Add repository MongoDB
+    apt_repository:
+      repo: deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse
+      state: present
+      filename: 'mongodb-org-3.4'
+
+  - name: Install mongodb-org/rabbitmq-server/postgresql
+    apt:
+      name={{item}}
+      state=latest
+      update_cache=yes
+    with_items:
+      - mongodb-org
+      - rabbitmq-server
+      - postgresql
+
+  - name: Download stackstorm
+    get_url:
+      url: https://packagecloud.io/install/repositories/StackStorm/stable/script.deb.sh
+      dest: /home/vagrant/script.deb.sh
+    become: false
+
+  - name: Install stackstorm
+    shell: bash /home/vagrant/script.deb.sh
+
+  - name: Remove StackStorm installscript
+    file: 
+      path: /home/vagrant/script.deb.sh
+      state: absent
+
+  - name: Install stackstorm components
+    apt:
+      name={{item}}
+      state=latest
+      update_cache=yes
+    with_items:
+      - st2 
+      - st2mistral
