@@ -3,7 +3,27 @@
   become: true
   tasks:
 
-    - name: Install nodejs
-      apt:
-        name: nodejs
-        state: present
+  - name: Download nodejs key
+    get_url:
+      url: https://deb.nodesource.com/setup_6.x
+      dest: /home/vagrant/setup_6.x
+    become: false
+
+  - name: Add nodejs rep
+    shell: bash /home/vagrant/setup_6.x
+
+  - name: Remove nodejs rep file
+    file:
+      path: /home/vagrant/setup_6.x
+      state: absent
+
+  - name: Install nodejs
+    apt:
+      name: nodejs
+      state: latest
+      update_cache: yes
+
+  - name: Install build-essential
+    apt:
+      name: build-essential
+      state: present

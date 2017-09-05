@@ -1,0 +1,13 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks:
+
+  - name: Install yo/generator-hubot/coffee-script
+    npm:
+      name={{item}}
+      global=yes
+    with_items:
+      - yo
+      - generator-hubot
+      - coffee-script
