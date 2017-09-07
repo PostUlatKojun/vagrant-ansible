@@ -1,0 +1,34 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks: 
+
+  - name: Install unzip
+    apt:
+      name: unzip
+      state: present
+      update_cache: yes
+
+  - name: Create sdk folder
+    file:
+      path: /opt/sdk
+      state: directory
+
+  - name: Unarchive sdk tools
+    unarchive:
+      src: https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
+      dest: /opt/sdk
+      remote_src: yes
+
+  - name: Update/install sdk
+    shell: echo y | bash /opt/sdk/tools/android update sdk --use-sdk-wrapper
+
+  - name: Add Path ANDROID_HOME
+    shell: echo ANDROID_HOME=/opt/sdk >> /etc/environment
+
+  - name: Add Path ANDROID tools/platform-tools
+    shell: echo "PATH=$PATH:/opt/sdk/tools:/opt/sdk/platforms-tools" >> /etc/environment
+
+  - name: Sourse environment
+    shell: "sh /etc/environment"
+    become: false
