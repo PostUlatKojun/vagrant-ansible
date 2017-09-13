@@ -1,0 +1,10 @@
+core:
+  lock_dir: /home/yandex-tank
+phantom:
+  enabled: true
+  package: yandextank.plugins.Phantom
+  address: 216.58.214.238:80
+  load_profile:
+    load_type: rps
+    schedule: line(1, 10, 1m)
+    url: /
