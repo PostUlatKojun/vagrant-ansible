@@ -33,8 +33,11 @@
 
     - name: Upgrade setuptools
       pip:
-        name: setuptools
+        name: "{{ item }}"
         state: latest
+      with_items:
+        - setuptools
+        - pyOpenSSL
 
     - name: Install yandex-tank
       pip: 
