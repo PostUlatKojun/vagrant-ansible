@@ -1,0 +1,32 @@
+---
+- hosts: linux_debian
+  tasks:
+
+    - name: install
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - python-lxml
+        - python-pip
+      become: true
+
+    - name: install 2
+      pip:
+        name: python-jenkins
+        state: present
+      become: true
+
+    - name: Copy vegeta job config
+      synchronize: 
+        src: /home/vagrant/ansible/playbooks/debian/jenkins/vegeta.xml
+        dest: /home/vagrant/vegeta.xml
+
+    - name: Add jenkins user to sudoers
+      jenkins_job:
+        config: vegeta.xml
+        name: vegeta
+        password: admin
+        url: http://192.168.33.124:8080
+        user: admin
+        state: present

@@ -16,13 +16,3 @@
         url: http://127.0.0.1:8080/jnlpJars/jenkins-cli.jar
         dest: /home/vagrant/jenkins-cli.jar
       become: false
-
-    #- name: Copy vegeta job config
-    #  shell: scp /home/vagrant/ansible/playbooks/debian/jenkins/config.xml vagrant@192.168.33.124:/home/vagrant/config.xml
-    #  become: false
-
-    #- name: Create jenkins job vegeta
-    #  shell: java -jar /home/vagrant/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job vegeta < /home/vagrant/config.xml --username admin --password admin
-
-    - name: Start jenkins job vegeta
-      shell: java -jar /home/vagrant/jenkins-cli.jar -s http://127.0.0.1:8080/ build vegeta --username admin --password admin

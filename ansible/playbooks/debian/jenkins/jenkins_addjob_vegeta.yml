@@ -1,0 +1,24 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks:
+
+    - name: Install rsync
+      apt:
+        name: rsync
+        state: present
+
+    - name: Copy vegeta job config
+      synchronize: 
+        src: /home/vagrant/ansible/playbooks/debian/jenkins/vegeta.xml
+        dest: /home/vagrant/vegeta.xml
+      become: false
+
+    - name: Create jenkins job vegeta
+      shell: java -jar /home/vagrant/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job vegeta < /home/vagrant/vegeta.xml --username admin --password admin
+      become: false
+
+    - name: Remove jenkins job file
+      file:
+        path: /home/vagrant/vegeta.xml
+        state: absent

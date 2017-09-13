@@ -1,0 +1,7 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks:
+
+    - name: Start jenkins job vegeta
+      shell: java -jar /home/vagrant/jenkins-cli.jar -s http://127.0.0.1:8080/ build vegeta --username admin --password admin -s
