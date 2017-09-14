@@ -1,0 +1,85 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks:
+
+    #- name: Start jenkins job vegeta
+    #  shell: java -jar /home/vagrant/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin pipeline-github-lib git-client git script-security ws-cleanup workflow-job pipeline-stage-view pipeline-model-declarative-agent credentials workflow-cps-global-lib email-ext github ldap build-timeout docker-workflow plain-credentials github-api gradle durable-task pipeline-model-definition junit icon-shim pipeline-stage-tags-metadata workflow-basic-steps pipeline-build-step timestamper cloudbees-folder  --username admin --password admin
+    #  become: false
+
+    - name: Install plugins
+      jenkins_plugin:
+        name: '{{ item }}'
+        state: present
+      with_items:
+        - pipeline-github-lib
+        - git-client
+        - git
+        - script-security
+        - ws-cleanup
+        - workflow-job
+        - pipeline-stage-view
+        - pipeline-model-declarative-agent
+        - credentials
+        - workflow-cps-global-lib
+        - email-ext
+        - github
+        - ldap
+        - build-timeout
+        - docker-workflow
+        - plain-credentials
+        - github-api
+        - gradle
+        - durable-task
+        - pipeline-model-definition
+        - junit
+        - icon-shim
+        - pipeline-stage-tags-metadata
+        - workflow-basic-steps
+        - pipeline-build-step
+        - timestamper
+        - cloudbees-folder
+        - workflow-scm-step
+        - mailer
+        - workflow-support
+        - authentication-tokens
+        - ssh-slaves
+        - workflow-durable-task-step
+        - matrix-project
+        - workflow-multibranch
+        - resource-disposer
+        - pipeline-graph-analysis
+        - display-url-api
+        - handlebars
+        - branch-api
+        - antisamy-markup-formatter
+        - ant
+        - ace-editor
+        - pipeline-rest-api
+        - token-macro
+        - workflow-step-api
+        - workflow-api
+        - pam-auth
+        - pipeline-model-extensions
+        - credentials-binding
+        - scm-api
+        - momentjs
+        - workflow-aggregator
+        - pipeline-milestone-step
+        - external-monitor-job
+        - pipeline-input-step
+        - ssh-credentials
+        - mapdb-api
+        - jackson2-api
+        - bouncycastle-api
+        - matrix-auth
+        - github-branch-source
+        - structs
+        - git-server
+        - docker-commons
+        - windows-slaves
+        - workflow-cps
+        - pipeline-stage-step
+        - pipeline-model-api
+        - jquery-detached
+        - subversion
