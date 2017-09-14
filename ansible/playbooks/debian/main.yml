@@ -8,7 +8,9 @@
 
 - include: jenkins/jenkins_install.yml
     
-# - include: pause.yml
+- include: apache2/apache2.yml
+
+- include: vegeta/vegeta.yml
 
 # - include: jenkins/jenkins_setupwizard_off.yml
 
@@ -20,4 +22,4 @@
 
 # - include: jenkins/jenkins_restart.yml
 
-- include: notification/slack.yaml
+# - include: notification/slack.yaml

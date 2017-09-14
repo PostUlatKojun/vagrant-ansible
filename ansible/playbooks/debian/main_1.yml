@@ -1,0 +1,25 @@
+---
+- hosts: linux_debian
+  tasks:
+  #   - debug:
+  #       msg: "play"
+
+- include: jenkins/jenkins_config.yml
+
+- include: jenkins/jenkins_any_autorisation.yml
+
+- include: jenkins/jenkins_restart.yml
+
+- include: pause.yml
+
+- include: jenkins/jenkins_install_plugins.yml
+
+- include: jenkins/jenkins_restart.yml
+
+- include: pause.yml
+
+- include: jenkins/jenkins_addjob_vegeta.yml
+
+- include: pause.yml
+
+- include: jenkins/jenkins_build_job_vegeta.yml
