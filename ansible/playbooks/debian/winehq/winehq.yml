@@ -1,0 +1,30 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks:
+
+  - name: Enable i386 architecture
+    command: dpkg --add-architecture i386
+
+  - name: Add wine key
+    apt_key:
+      url: https://dl.winehq.org/wine-builds/Release.key
+      state: present
+
+  - name: Create repofile
+    file:
+      path: /etc/apt/sources.list.d/wine.list
+      state: touch
+
+  - name: Add line
+    lineinfile:
+      path: /etc/apt/sources.list.d/wine.list
+      line: 'deb https://dl.winehq.org/wine-builds/debian/ jessie main'
+      state: present
+
+  - name: Install wine
+    apt:
+      name: winehq-stable
+      install_recommends: yes
+      state: present
+      update_cache: yes
