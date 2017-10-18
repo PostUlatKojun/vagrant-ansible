@@ -7,3 +7,4 @@
       apt:
         name: lxde
         state: present
+        update_cache: yes
