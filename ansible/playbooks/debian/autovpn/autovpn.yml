@@ -1,0 +1,24 @@
+---
+- hosts: linux_debian
+  tasks:
+
+  - name: 1
+    apt:
+      name: '{{ item }}'
+      state: present
+    with_items:
+      - openvpn
+      - git
+    become: true
+
+  - name: 2
+    git:
+      repo: https://github.com/adtac/autovpn
+      dest: /home/vagrant/autovpn
+
+  - name: 3
+    command: go build -o /home/vagrant/autovpn/autovpn /home/vagrant/autovpn/autovpn.go
+    
+  - name: 4
+    command: mv /home/vagrant/autovpn /usr/local/bin/
+    become: true

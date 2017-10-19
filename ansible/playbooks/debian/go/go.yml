@@ -1,0 +1,31 @@
+---
+- hosts: linux_debian
+  tasks:
+
+  - name:
+    apt:
+      name: curl
+      state: present
+    become: true
+
+  - name: Add sublime key
+    blockinfile:
+      path: /etc/environment
+      block: | 
+        export GOPATH=/home/git/go
+        export GOROOT=/usr/local/src/go
+        export PATH=${PATH}:$GOROOT/bin
+    become: true
+
+  - name: 2
+    shell: source /etc/environment
+
+  - name: 3
+    shell: wget `curl -s https://golang.org/dl/ | grep -E -o 'https://storage.googleapis.com/golang/go[0-9.]{3,}linux-amd64.tar.gz' | head -n 1`
+
+  - name: 4
+    unarchive:
+      src: /home/vagrant/go1.9.1.linux-amd64.tar.gz
+      dest: /usr/local/src/
+      remote_src: yes
+    become: true
