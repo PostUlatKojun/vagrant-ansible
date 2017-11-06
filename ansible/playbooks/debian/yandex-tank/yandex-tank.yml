@@ -22,7 +22,7 @@
         state=present
         update_cache=yes
       with_items:
-        - binutils-dev
+#        - binutils-dev
         - git
       when: ansible_distribution == "Debian"
 
@@ -37,45 +37,8 @@
         state: latest
       with_items:
         - setuptools
-        - pyOpenSSL
+#        - pyOpenSSL
 
     - name: Install yandex-tank
       pip: 
         name: https://api.github.com/repos/yandex/yandex-tank/tarball/master
-
-    - name: Add phantom repository # только для Ubuntu
-      apt_repository: 
-        repo: 'ppa:yandex-load/main'
-        update_cache: yes
-      when: ansible_distribution == "Ubuntu"
-
-    - name: Install phantom # только для Ubuntu
-      apt: 
-        name={{ item }}
-        state=present
-      with_items:
-        - phantom
-        - phantom-ssl
-      when: ansible_distribution == "Ubuntu"
-
-    - name: Clone phantom from github
-      git:
-        repo: https://github.com/mamchits/phantom.git
-        dest: /home/vagrant/phantom
-      when: ansible_distribution == "Debian"
-      become: no
-      
-    - name: make
-      command: make -R all
-      args:
-        chdir: /home/vagrant/phantom
-      when: ansible_distribution == "Debian"
-      become: no
-
-    - name: move 1
-      command: mv /home/vagrant/phantom/bin/phantom /usr/bin/
-      when: ansible_distribution == "Debian"
-
-    - name: move 2
-      command: mv /home/vagrant/phantom/lib/phantom/ /usr/lib/
-      when: ansible_distribution == "Debian"
