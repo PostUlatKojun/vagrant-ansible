@@ -4,24 +4,24 @@
 
     - name: Download Jmeter # вариант с скачиванием и распаковкой в разных задачах
       get_url:
-        url: http://apache.volia.net//jmeter/binaries/apache-jmeter-3.2.tgz
-        dest: /home/vagrant/apache-jmeter-3.2.tgz
+        url: http://apache.volia.net//jmeter/binaries/apache-jmeter-3.3.tgz
+        dest: /home/vagrant/apache-jmeter-3.3.tgz
       
     - name: Unarchive Jmeter
       unarchive:
-        src: /home/vagrant/apache-jmeter-3.2.tgz
+        src: /home/vagrant/apache-jmeter-3.3.tgz
         dest: /opt/
         remote_src: True
       become: true
 
     - name: Remove temp files
       file:
-        dest: /home/vagrant/apache-jmeter-3.2.tgz
+        dest: /home/vagrant/apache-jmeter-3.3.tgz
         state: absent
 
     - name: create simlink
       file:
-        src: /opt/apache-jmeter-3.2
+        src: /opt/apache-jmeter-3.3
         dest: /opt/jmeter
         state: link
       become: true
