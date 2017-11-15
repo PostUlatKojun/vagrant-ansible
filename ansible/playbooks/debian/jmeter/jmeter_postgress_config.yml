@@ -1,0 +1,25 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks: 
+
+    - name: Update heap 512 to 4096
+      lineinfile:
+        path: /opt/apache-jmeter-3.3/bin/jmeter
+        regexp: 'HEAP="-Xms512m -Xmx512m"'
+        line: 'HEAP="-Xms512m -Xmx4048m"'
+
+    - name: Download jmeter postgresql plugin
+      command: 'wget https://jdbc.postgresql.org/download/postgresql-42.1.4.jar'
+      become: false
+
+    - name: Copy
+      copy:
+        src: /home/vagrant/postgresql-42.1.4.jar
+        dest: /opt/apache-jmeter-3.3/lib/postgresql-42.1.4.jar
+        remote_src: yes
+
+    - name: Del
+      file:
+        path: /home/vagrant/postgresql-42.1.4.jar
+        state: absent
