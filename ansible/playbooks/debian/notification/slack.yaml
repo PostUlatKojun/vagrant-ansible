@@ -4,8 +4,8 @@
 
   - name: Send notification message via Slack
     slack:
-      domain: # уоur_slackteam_domain
-      token: # your_slack_token
+      domain: # your_domain
+      token: # your_token
       #channel: @your_channel # если добавлен только в один личный канал то не нужно
       msg: '{{ inventory_hostname }} completed'
     # delegate_to: localhost # не уверен что вообще нужно
