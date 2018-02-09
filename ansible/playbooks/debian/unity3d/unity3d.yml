@@ -1,0 +1,59 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks: 
+
+    - name: Install Dependences 
+      apt: 
+        name={{ item }}
+        state=present
+        update_cache=yes
+      with_items:
+        - libgtk2.0-0
+        - libsoup2.4-1
+        - libarchive13
+        - git
+        - libglu1-mesa
+        - libnss3
+        - libasound2
+        - libxtst6
+        - libgconf-2-4
+        - monodevelop
+
+    - name: Install Dependences_2 
+      apt: 
+        name=mono-reference-assemblies-3.5
+        state=present
+        update_cache=yes
+
+    - name: Download Unity3d
+      get_url:
+        url: http://beta.unity3d.com/download/7807bc63c3ab/UnitySetup-2017.3.0p2
+        dest: ~/UnitySetup-2017.3.0p2
+        mode: 0755
+
+    - name: Install Unity3d
+      shell: echo "y" | ~/UnitySetup-2017.3.0p2 --unattended --install-location=/home/vagrant/Unity
+
+    - name: Move Unity3d to /opt/
+      shell: mv /home/vagrant/Unity/* /opt/Unity*
+
+#    - name: Clone repository
+#      git:
+#      	repo: repo_link
+#      	dest: /src/repo_dest
+
+    - name: Create simlink in /opt/
+      file:
+        src: /opt/Unity-2017.3.0p2/Editor/Unity
+        dest: /opt/unity
+        state: link
+
+    - name: Create simlink in /usr/bin
+      file:
+        src: /opt/unity
+        dest: /usr/bin/unity
+        state: link
+
+#    - name: Activate Unity3d
+#      shell: Unity -batchmode -nographics -serial='SERIAL' -username='USER' -password='PASSWORD' -logFile ~/Unity.log
