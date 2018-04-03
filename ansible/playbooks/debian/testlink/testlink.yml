@@ -1,0 +1,49 @@
+---
+- hosts: linux_debian
+  tasks: 
+
+    - name: Intstall lamp # вариант с скачиванием и распаковкой в разных задачах
+      apt:
+        name: '{{ item }}'
+        state: present
+      with_items:
+        - apache2
+        - php
+        - mysql-server
+        - mysql-client
+        - mysql-common
+
+      become: true
+      
+    - name: Download and unarchive testlink
+      unarchive:
+        src: https://datapacket.dl.sourceforge.net/project/testlink/TestLink%201.9/TestLink%201.9.16/testlink-1.9.16.tar.gz
+        dest: /opt/
+        remote_src: True
+      become: true
+
+
+
+
+    - name: Remove temp files
+      file:
+        dest: /home/vagrant/apache-jmeter-3.3.tgz
+        state: absent
+
+    - name: create simlink
+      file:
+        src: /opt/apache-jmeter-3.3
+        dest: /opt/jmeter
+        state: link
+      become: true
+
+    - name: shell
+      shell: sh -c 'echo JMETER_HOME=/opt/jmeter >> /etc/environment'
+      become: true
+    
+    - name: create simlink 2
+      file:
+        src: /opt/jmeter/bin/jmeter
+        dest: /usr/bin/jmeter
+        state: link
+      become: true
