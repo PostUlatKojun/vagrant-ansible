@@ -1,0 +1,10 @@
+---
+- hosts: linux_debian
+  tasks: 
+
+    - name: Download and unarchive bamboo
+      unarchive:
+        src: https://product-downloads.atlassian.com/software/bamboo/downloads/atlassian-bamboo-6.4.1.tar.gz
+        dest: /opt/
+        remote_src: True
+      become: true

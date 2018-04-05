@@ -1,0 +1,7 @@
+---
+- hosts: linux_debian
+  tasks: 
+
+    - name: Start bamboo
+      shell: sh -c '/opt/atlassian-bamboo-6.4.1/bin/start-bamboo.sh'
+      become: true
