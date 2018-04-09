@@ -1,0 +1,17 @@
+---
+- hosts: linux_debian
+  tasks:
+  become: true 
+
+    - name: Download and unarchive bamboo
+      unarchive:
+        src: https://product-downloads.atlassian.com/software/bamboo/downloads/atlassian-bamboo-6.4.1.tar.gz
+        dest: /opt/
+        remote_src: True
+
+    - name: Add bamboo home 
+      lineinfile:
+        path: /opt/atlassian-bamboo-6.4.1/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties
+        state: present
+        regexp: '^#bamboo.home'
+        line: 'bamboo.home= /home/vagrant/bamboo/bamboo-home'
