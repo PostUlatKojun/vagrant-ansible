@@ -1,7 +1,7 @@
 ---
 - hosts: linux_debian
-  tasks:
-  become: true 
+  become: true
+  tasks: 
 
     - name: Download and unarchive bamboo
       unarchive:
@@ -13,5 +13,5 @@
       lineinfile:
         path: /opt/atlassian-bamboo-6.4.1/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties
         state: present
-        regexp: '^#bamboo.home'
+        regexp: '^bamboo.home'
         line: 'bamboo.home= /home/vagrant/bamboo/bamboo-home'
