@@ -1,0 +1,38 @@
+---
+- hosts: linux_debian
+  become: true
+  tasks: 
+
+    - name: Install dependences
+      apt:
+        name={{item}}
+        state=present
+        update_cache=yes
+      with_items:
+        - git
+        - cmake
+        - libssl-dev
+        # - gcc
+        # - openssl
+
+    - name: Clone repo 
+      git:
+        repo: 'git://github.com/yandex/odyssey.git'
+        dest: /opt/odyssey
+
+    - name: Create build dir
+      file:
+        path: /opt/odyssey/build
+        owner: root
+        group: root
+        state: directory
+        mode: 0755
+
+    - name: Cmake generate make files
+      shell: cmake -DCMAKE_BUILD_TYPE=Release ..
+      args:
+        chdir: /opt/odyssey/build
+
+    - name: Make build
+      make:
+        chdir: /opt/odyssey/build
