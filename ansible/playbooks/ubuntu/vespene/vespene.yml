@@ -1,0 +1,65 @@
+---
+- hosts: linux_ubuntu
+  tasks: 
+
+  - name: Clone reposotory
+    git:
+      repo: 'https://github.com/vespene-io/vespene.git'
+      dest: /home/vagrant/vespene
+
+  - name: edit 1_prepare.sh
+    lineinfile:
+      path: /home/vagrant/vespene/setup/1_prepare.sh
+      state: present
+      regexp: 'sudo useradd vespene'
+      line: 'sudo useradd vespene --password vespene'
+
+  - name: edit_2 1_prepare.sh
+    lineinfile:
+      path: /home/vagrant/vespene/setup/1_prepare.sh
+      state: present
+      line: 'printf "vespene\nvespene" | sudo passwd vespene'
+
+  - name: bash 1_prepare.sh
+    command: bash 1_prepare.sh
+    args:
+      chdir: /home/vagrant/vespene/setup
+
+  - name: bash 2_database.sh
+    command: bash 2_database.sh
+    args:
+      chdir: /home/vagrant/vespene/setup
+
+  - name: bash 3_application.sh
+    command: bash 3_application.sh
+    args:
+      chdir: /home/vagrant/vespene/setup
+
+  - name: edit 4_superuser.sh
+    lineinfile:
+      path: /home/vagrant/vespene/setup/4_superuser.sh
+      state: present
+      regexp: '^\DAPP_SUDO\s\DPYTHON\smanage.py\screatesuperuser'
+      line: echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('vespene', 'admin@myproject.com', 'vespene')" | $APP_SUDO $PYTHON manage.py shell
+
+  - name: bash 4_superuser.sh
+    command: bash 4_superuser.sh
+    args:
+      chdir: /home/vagrant/vespene/setup
+
+  - name: bash 5_tutorial.sh
+    command: bash 5_tutorial.sh
+    args:
+      chdir: /home/vagrant/vespene/setup
+
+  - name: edit 0_common.sh
+    lineinfile:
+      path: /home/vagrant/vespene/setup/0_common.sh
+      state: present
+      regexp: 'GUNICORN_OPTS="--bind 127.0.0.1:8000"'
+      line: 'GUNICORN_OPTS="--bind 192.168.33.112:8000"'
+
+  - name: bash 6_services.sh
+    command: bash 6_services.sh
+    args:
+      chdir: /home/vagrant/vespene/setup
