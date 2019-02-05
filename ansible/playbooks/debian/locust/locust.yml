@@ -5,22 +5,15 @@
 
     - name: Install dependences
       apt:
-        name={{item}}
-        state=present
-        update_cache=yes
-      with_items:
-        - git
-        - python3
-        - python3-pip
+        name: ['git', 'python3', 'python3-pip']
+        state: present
+        update_cache: yes
 
     - name: update pip
       pip:
-        name={{item}}
-        state=latest
-        executable=pip3
-      with_items:
-        - pip
-        - setuptools
+        name: ['pip', 'setuptools']
+        state: latest
+        executable: pip3
 
     - name: install locust
       pip:

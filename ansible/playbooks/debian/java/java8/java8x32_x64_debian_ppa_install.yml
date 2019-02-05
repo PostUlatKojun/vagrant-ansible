@@ -27,10 +27,6 @@
 
   - name: Install Oracle Java 8
     apt:
-      name={{item}}
-      state=latest
-      update_cache=yes
-    with_items:
-      - oracle-java8-installer
-      - ca-certificates
-      - oracle-java8-set-default
+      name: ['oracle-java8-installer', 'ca-certificates', 'oracle-java8-set-default']
+      state: latest
+      update_cache: yes
