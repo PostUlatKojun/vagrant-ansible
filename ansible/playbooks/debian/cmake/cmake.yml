@@ -1,0 +1,31 @@
+---
+- hosts: linux_debian
+  become: false
+  tasks:
+
+    - name: Install git
+      apt:
+        name: ['git', 'g++']
+        state: present
+        update_cache: yes
+      become: true
+
+    - name: Git clone 
+      git:
+        repo: 'https://github.com/Kitware/CMake.git'
+        dest: /home/vagrant/cmake/
+
+    - name: Install
+      command: '/home/vagrant/cmake/bootstrap'
+      args:
+        chdir: '/home/vagrant/cmake'
+
+    - name: Make
+      make:
+        chdir: /home/vagrant/cmake
+
+    - name: Make Install
+      make:
+        chdir: /home/vagrant/cmake
+        target: install
+      become: true
