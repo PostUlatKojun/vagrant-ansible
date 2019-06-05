@@ -1,0 +1,53 @@
+---
+- hosts: linux_debian
+  tasks: 
+
+    - name: apt update && upgrade
+      apt: 
+        force_apt_get: yes
+        only_upgrade: yes
+        update_cache: yes
+      become: yes
+
+    - name: install dependencies
+      apt: 
+        name: "{{ packages }}"
+        force_apt_get: yes
+      vars:
+        packages:
+          - make
+          - build-essential
+          - libssl-dev
+          - zlib1g-dev
+          - libbz2-dev
+          - libreadline-dev
+          - libsqlite3-dev
+          - wget
+          - curl
+          - llvm
+          - libncurses5-dev
+          - libncursesw5-dev
+          - xz-utils
+          - tk-dev
+      become: yes
+
+    - name: unarchive
+      unarchive:
+        src: https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tgz
+        dest: /home/vagrant/
+        remote_src: True
+
+    - name: config 
+      command: ./configure --enable-optimizations
+      args:
+        chdir: /home/vagrant/Python-3.6.4
+
+    - name: make
+      make: 
+        chdir: /home/vagrant/Python-3.6.4
+
+    - name: make altinstall
+      make: 
+        chdir: /home/vagrant/Python-3.6.4
+        target: altinstall
+      become: yes

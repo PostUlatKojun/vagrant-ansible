@@ -5,13 +5,10 @@
 
   - name: Install apt-transport-https
     apt: 
-      name={{item}}
-      state=present
-      update_cache=yes
-    with_items:
-      - apt-transport-https
-      - python-apt
-
+      name: ['apt-transport-https', 'python-apt']
+      state: present
+      update_cache: yes
+    
   - name: Add Grafana Repo
     apt_repository: 
       repo: 'deb https://packages.grafana.com/oss/deb stable main'
