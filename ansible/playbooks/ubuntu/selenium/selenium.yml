@@ -1,0 +1,44 @@
+---
+- hosts: linux_ubuntu
+  tasks: 
+
+    - name: apt update && upgrade
+      apt: 
+        force_apt_get: yes
+        only_upgrade: yes
+        update_cache: yes
+      become: yes
+
+    - name: install virtualenv
+      apt: 
+        name: "{{ packages }}"
+        force_apt_get: yes
+      vars:
+        packages:
+          - virtualenv
+          - unzip
+      become: yes
+
+    - name: install selenium
+      pip:
+        name: selenium
+        virtualenv: /home/vagrant/selenium
+        virtualenv_python: python3
+        
+    - name: install chromedriver
+      unarchive:
+        src: https://chromedriver.storage.googleapis.com/75.0.3770.8/chromedriver_linux64.zip
+        dest: /usr/bin/
+        remote_src: yes
+        owner: root
+        group: root
+      become: true
+
+    - name: install geckodriver
+      unarchive:
+        src: https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
+        dest: /usr/bin/
+        remote_src: yes
+        owner: root
+        group: root
+      become: true    
