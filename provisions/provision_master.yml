@@ -1,0 +1,102 @@
+---
+- hosts: localhost
+  become: yes
+  tasks: 
+
+    - name: install virtualenv
+      apt: 
+        name: "{{ packages }}"
+        force_apt_get: yes
+      vars:
+        packages:
+          - python-virtualenv
+          - python-dev
+          - gcc
+          - libffi-dev
+          - libkrb5-dev
+          - libffi6
+          - libssl-dev
+          - libyaml-dev
+          - libsasl2-dev
+          - libldap2-dev
+          - sshpass
+          - git
+          - redis-server
+          - mariadb-server
+
+    - name: install pymysql 
+      pip:
+        name: pymysql
+        
+    - name: install polemarch 
+      pip:
+        name: polemarch
+        virtualenv: /home/vagrant/polemarch
+      become: no
+
+    - name: asd
+      command: mysql -u root -proot -e "SET @@global.innodb_large_prefix = 1; create user db_user; create database db_name default CHARACTER set utf8 default COLLATE utf8_general_ci; grant all on db_name.* to 'db_user'@'localhost' identified by 'db_password'"
+
+    #- name: db user create
+    #  mysql_user:
+    #    name: db_user
+    #    password: db_password
+    #    priv: '*.*:ALL'
+    #    state: present
+    #  become: yes
+
+    # - name: msql var
+    #   mysql_variables:
+    #     variable: innodb_large_prefix
+    #     value: 1
+    #     login_user: root
+    #     login_password: ""
+    #     # config_file: /etc/mysql/my.cnf
+
+    # - name: db create
+    #   mysql_db:
+    #     name: db_name
+    #     collation: utf8_general_ci
+    #     encoding: utf8 
+    #     state: present
+
+    # - name: command
+    #   command: >
+    #     mysql <<QUERY_INPUT
+    #     SET @@global.innodb_large_prefix = 1;
+    #     create user db_user;
+    #     create database db_name default CHARACTER set utf8 default COLLATE utf8_general_ci;
+    #     grant all on db_name.* to 'db_user'@'localhost' identified by 'db_password';
+    #     QUERY_INPUT
+
+    - name: mkdir
+      file:
+        path: /etc/polemarch
+        state: directory
+        mode: '0755'
+
+    - name: cp
+      copy:
+        src: /home/vagrant/ansible/playbooks/settings.ini
+        dest: /etc/polemarch/settings.ini
+        mode: '0644'
+
+    - name: mkdir
+      file:
+        path: /var/log/polemarch
+        state: directory
+        mode: '0755'
+
+    - name: mkdir
+      file:
+        path: /var/log/polemarch/web.log
+        state: touch
+        mode: '0644'
+
+    - name: asd2
+      command: /home/vagrant/polemarch/bin/polemarchctl migrate
+      become: no
+
+    - name: asd3
+      command: /home/vagrant/polemarch/bin/polemarchctl webserver
+      become: no
