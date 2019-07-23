@@ -2,37 +2,45 @@
 - hosts: linux_debian
   become: true
   tasks: 
-  - name: Install add-apt-repository
-    apt: 
-      name={{item}}
-      state=latest
-      update_cache=yes
-    with_items:
-      - apt-transport-https
-      - ca-certificates
 
-  - name: Add Oracle Java Repository
+  - name: apt update && upgrade
+    apt: 
+      force_apt_get: yes
+      only_upgrade: yes
+      update_cache: yes
+
+  - name: install packages
+    apt: 
+      name: "{{ packages }}"
+      force_apt_get: yes
+    vars:
+      packages:
+        - apt-transport-https
+        - ca-certificates
+        - curl 
+        - software-properties-common
+        - gnupg2
+
+  - name: Adding Repo Key
+    apt_key:
+      url: https://download.docker.com/linux/debian/gpg
+
+  - name: add docker repo
     apt_repository: 
-      repo: 'deb https://apt.dockerproject.org/repo debian-jessie main'
+      repo: 'deb [arch=amd64] https://download.docker.com/linux/debian stretch stable'
       state: present
       filename: docker
 
-  - name: Adding Oracle Java9 Repo Key
-    apt_key:
-      keyserver: 'hkp://p80.pool.sks-keyservers.net:80'
-      id: '58118E89F3A912897C070ADBF76221572C52609D'
-      state: "present"
-
   - name: Install docker
     apt:
-      name: docker-engine
+      name: docker-ce
       state: latest
       update_cache: yes
 
-  - name: docker group add
-    group: 
-      name: docker
-      state: present
+  # - name: docker group add
+  #   group: 
+  #     name: docker
+  #     state: present
 
   - name: add user to group 
     user:
@@ -40,7 +48,13 @@
       groups: docker
       append: yes
 
-  - name: start docker 
-    service:
-      name: docker
-      state: started
+  # - name: start docker 
+  #   service:
+  #     name: docker
+  #     state: started
+
+  - name: change file 
+    lineinfile:
+      path: /etc/resolv.conf
+      regexp: '^nameserver'
+      line: nameserver 8.8.8.8
