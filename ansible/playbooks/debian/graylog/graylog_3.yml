@@ -1,0 +1,126 @@
+---
+- hosts: linux_debian # Пока только для debian
+  become: true
+  tasks: 
+
+    - name: Install packages # установка для debian jessie
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      with_items:
+        - apt-transport-https
+        - uuid-runtime
+        - pwgen
+        - curl
+        - dirmngr
+
+    - name: Install jre # установка для debian jessie
+      apt:
+        name: openjdk-8-jre-headless
+        state: present
+        update_cache: yes
+    
+    - name: Add elastic key
+      apt_key:
+        url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        state: present
+
+    - name: Add elastic sourcelist
+      apt_repository:
+        repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
+        state: present
+        filename: elastic-6.x
+
+    - name: Install elasticsearch
+      apt:
+        name: elasticsearch
+        state: present
+        update_cache: yes
+
+    - name: Conf elastic
+      lineinfile:
+        path: /etc/elasticsearch/elasticsearch.yml
+        state: present
+        regexp: '^%cluster.name:'
+        line: 'cluster.name: graylog'
+
+    - name: Enable elastic
+      systemd:
+        name: elasticsearch
+        state: restarted
+        enabled: yes
+
+    - name: Add mongodb key
+      apt_key:
+        keyserver: keyserver.ubuntu.com
+        id: 9DA31620334BD75D9DCB49F368818C72E52529D4
+
+    - name: Add mongodb sourcelist
+      apt_repository:
+        repo: deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/4.0 main
+        state: present
+        filename: mongodb-org-4.0        
+
+    - name: Install mongobd
+      apt:
+        name: mongodb-org
+        state: present
+        update_cache: yes
+
+    - name: Enable mongodb
+      systemd:
+        name: mongod
+        state: restarted
+        enabled: yes
+
+    - name: Install graylog rep
+      apt:
+        deb: https://packages.graylog2.org/repo/packages/graylog-3.1-repository_latest.deb
+
+    - name: Set graylog secret
+      lineinfile:
+        path: /etc/graylog/server/server.conf
+        state: present
+        regexp: '^password_secret'
+        line: 'password_secret = OH9wXpsNZVBA8R5vJQSnkhTB1qDOjCxAh3aE3LvXddtfDlZlKYEyGS24BJAiIxI0sbSTSPovTTnhLkkrUvhSSxodTlzDi5gP'
+
+    - name: Set graylog pass
+      lineinfile:
+        path: /etc/graylog/server/server.conf
+        state: present
+        regexp: '^root_password_sha2'
+        line: 'root_password_sha2 = e3c652f0ba0b4801205814f8b6bc49672c4c74e25b497770bb89b22cdeb4e951'
+
+    - name: Bind ip
+      lineinfile:
+        path: /etc/graylog/server/server.conf
+        state: present
+        regexp: '^http_bind_address'
+        line: 'http_bind_address = 192.168.33.124:9000'
+
+    - name: Enable graylog-server
+      systemd:
+        name: graylog-server
+        state: restarted
+        enabled: yes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
