@@ -1,9 +1,9 @@
 ---
-- hosts: linux_debian # Пока только для debian
+- hosts: linux_debian 
   become: true
   tasks: 
 
-    - name: Install packages # установка для debian jessie
+    - name: Install packages
       apt:
         name: "{{ item }}"
         state: present
@@ -15,7 +15,7 @@
         - curl
         - dirmngr
 
-    - name: Install jre # установка для debian jessie
+    - name: Install jre
       apt:
         name: openjdk-8-jre-headless
         state: present
