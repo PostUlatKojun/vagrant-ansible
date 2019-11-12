@@ -1,0 +1,90 @@
+---
+- hosts: linux_ubuntu 
+  become: true
+  tasks: 
+
+    - name: upgrade 
+      apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: Add mssql key
+      apt_key:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+
+    - name: Add mssql sourcelist
+      apt_repository:
+        repo: deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/ubuntu/16.04/mssql-server-2019 xenial main
+        state: present
+        filename: mssql-server-2019
+
+    - name: Install mssql-server
+      apt:
+        name: mssql-server
+        state: present
+        update_cache: yes
+
+    - name: Stop mssql service
+      service:
+        name: mssql-server
+        state: stopped 
+
+    - name: Config mssql
+      shell: "ACCEPT_EULA='Y' MSSQL_PID='Express' MSSQL_SA_PASSWORD='admin!23' /opt/mssql/bin/mssql-conf setup"
+
+    # - name: Stop mssql service
+    #   systemd:
+    #     state: reloaded
+    #     name: mssql-server
+    #     scope: system
+
+    # - name: Stoped mssql service
+    #   systemd:
+    #     state: stopped
+    #     name: mssql-server
+    #     scope: system
+
+    - name: Stop mssql service
+      shell: systemctl stop mssql-server 
+
+    - name: mkdir
+      file:
+        path: /etc/systemd/system/mssql-server.service.d
+        owner: root
+        group: root
+        state: directory
+
+    - name: file
+      file:
+        path: /etc/systemd/system/mssql-server.service.d/override.conf
+        owner: root
+        group: root
+        mode: 644
+        state: touch
+
+    - name: block
+      blockinfile:
+        path: /etc/systemd/system/mssql-server.service.d/override.conf
+        block: |
+          [Service]
+          Environment="LD_LIBRARY_PATH=/opt/mssql/lib"
+
+    - name: Create a symbolic link
+      file:
+        src: /usr/lib/x86_64-linux-gnu/libssl.so.1.0.0
+        dest: /opt/mssql/lib/libssl.so
+        owner: root
+        group: root
+        state: link
+
+    - name: Create a symbolic link 2
+      file:
+        src: /usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.0
+        dest: /opt/mssql/lib/libcrypto.so 
+        owner: root
+        group: root
+        state: link
+
+    - name: Start service
+      shell: systemctl start mssql-server 
