@@ -1,0 +1,99 @@
+---
+- hosts: linux_ubuntu 
+  become: true
+  tasks: 
+
+  - name: apt update && upgrade
+    apt: 
+      force_apt_get: yes
+      only_upgrade: yes
+      update_cache: yes
+
+  - name: install packages
+    apt: 
+      name: "{{ packages }}"
+      update_cache: yes
+    vars:
+      packages:
+        - apache2
+        - libapache2-mod-php
+        - mysql-server
+        - php
+        - php-mbstring
+        - php-gd
+        - php-xml
+        - php-bcmath
+        - php-ldap
+        - php-mysql
+
+  - name: change file 
+    lineinfile:
+      path: /etc/php/7.2/apache2/php.ini
+      regexp: '^date.timezone'
+      line: date.timezone = 'Europe/Kiev'
+
+  - name: Download file
+    get_url:
+      url: https://repo.zabbix.com/zabbix/4.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_4.0-3+bionic_all.deb
+      dest: /home/vagrant/zabbix-release_4.0-3+bionic_all.deb
+
+  - name: add repo
+    apt: 
+      deb: /home/vagrant/zabbix-release_4.0-3+bionic_all.deb
+
+  - name: rm debfile
+    file:
+      path: /home/vagrant/zabbix-release_4.0-3+bionic_all.deb
+      state: absent
+
+
+  - name: install zabbix
+    apt: 
+      name: "{{ packages }}"
+      update_cache: yes
+    vars:
+      packages:
+        - zabbix-server-mysql
+        - zabbix-frontend-php
+        - zabbix-agent
+      
+  - name: Create database zabbixdb
+    mysql_db:
+      name: zabbixdb
+      state: present
+      encoding: utf8
+      collation: utf8_bin
+
+  - name: Create user zabbix
+    mysql_user:
+      name: zabbix
+      password: password
+      priv: 'zabbixdb.*:ALL,GRANT'
+      state: present
+
+  - name: run command
+    shell:
+      cmd: zcat create.sql.gz | mysql -u zabbix --password='password' zabbixdb
+      chdir: /usr/share/doc/zabbix-server-mysql
+
+  - name: change zabbix_server.conf
+    lineinfile:
+      path: /etc/zabbix/zabbix_server.conf
+      regexp: "{{ item.key}}"
+      line: "{{ item.value}}"
+    with_dict: "{{ lines }}"
+    vars:
+      lines:
+        DBHost : "DBHost=localhost"
+        DBName : "DBName=zabbixdb"
+        DBUser : "DBUser=zabbix"
+        DBPassword : "DBPassword=password"
+
+  - name: restart services 
+    service:
+      name: "{{ services }}"
+      state: restarted
+    vars:
+      services:
+        - apache2
+        - zabbix-server

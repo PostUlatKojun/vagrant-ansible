@@ -30,6 +30,7 @@ then
 	apt-get update
 	apt-get install -y ansible
 	cp -r /home/vagrant/ansible/ansible /etc/
+	sudo pip install pymysql
 	echo "ubuntu-bionic"
 	# install polemarch
 	# apt-get install python-pip python-virtualenv python-dev gcc libffi-dev libkrb5-dev libffi6 libssl-dev libyaml-dev libsasl2-dev libldap2-dev sshpass git redis-server mariadb-server
