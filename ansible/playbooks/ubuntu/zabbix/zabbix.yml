@@ -9,7 +9,18 @@
       only_upgrade: yes
       update_cache: yes
 
-  - name: install packages
+  - name: install ansible mysql module dependencies
+    apt: 
+      name: "{{ packages }}"
+      update_cache: yes
+    vars:
+      packages:
+        - mysql-client
+        - python3-dev
+        - libmysqlclient-dev
+        - python3-mysqldb
+
+  - name: install zabbix dependencies
     apt: 
       name: "{{ packages }}"
       update_cache: yes
@@ -17,6 +28,7 @@
       packages:
         - apache2
         - libapache2-mod-php
+        - mysql-client
         - mysql-server
         - php
         - php-mbstring
@@ -25,6 +37,9 @@
         - php-bcmath
         - php-ldap
         - php-mysql
+        - python3-dev
+        - libmysqlclient-dev
+        - python3-mysqldb
 
   - name: change file 
     lineinfile:
@@ -36,6 +51,7 @@
     get_url:
       url: https://repo.zabbix.com/zabbix/4.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_4.0-3+bionic_all.deb
       dest: /home/vagrant/zabbix-release_4.0-3+bionic_all.deb
+    retries: 3
 
   - name: add repo
     apt: 
@@ -91,9 +107,8 @@
 
   - name: restart services 
     service:
-      name: "{{ services }}"
+      name: "{{ item }}"
       state: restarted
-    vars:
-      services:
-        - apache2
-        - zabbix-server
+    loop:
+      - apache2
+      - zabbix-server
