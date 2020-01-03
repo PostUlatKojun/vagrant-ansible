@@ -1,0 +1,29 @@
+---
+- hosts: linux_ubuntu 
+  become: true
+  tasks: 
+
+  - name: apt update && upgrade
+    apt: 
+      upgrade: yes
+      update_cache: yes
+  
+  - name: install apt-transport-https
+    apt: 
+      name: apt-transport-https
+      update_cache: yes
+
+  - name: add key
+    apt_key:
+      url: https://www.plasticscm.com/plasticrepo/stable/ubuntu/Release.key
+
+  - name: add rep
+    apt_repository:
+      repo: "deb https://www.plasticscm.com/plasticrepo/stable/ubuntu/ ./"
+      state: present
+      filename: plasticscm-stables
+
+  - name: install plasticscm
+    apt: 
+      name: plasticscm-complete
+      update_cache: yes
